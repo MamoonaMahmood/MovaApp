@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="Login">Login to your account</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="hintEmail">abc@gmail.com</string>
+    <string name="Checkbox">Remember Me</string>
+    <string name="signIn">Sign in</string>
+    <string name="forgot">Forgot the password?</string>
+    <string name="continueWith">or continue with?</string>
+    <string name="NoAccount">Don\'t have an account? Sign up</string>
+    <string name="Top10">Top 10 movies this week</string>
+    <string name="NewRelease">New Releases</string>
+    <string name="SeeAll">See All</string>
+</resources>

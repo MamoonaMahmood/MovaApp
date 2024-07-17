@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
 }
 
 android {
@@ -79,6 +80,10 @@ dependencies {
     // Kotlin
     implementation(libs.kotlinx.coroutines.android)
 
-
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.okhttp)
 
 }

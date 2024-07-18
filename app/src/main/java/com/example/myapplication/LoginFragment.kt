@@ -12,6 +12,9 @@ import android.widget.Toast
 
 class LoginFragment : Fragment() {
 
+    private lateinit var signInBtn: Button
+    private lateinit var emailEt: EditText
+    private lateinit var passwordEt: EditText
     companion object {
         fun newInstance() = LoginFragment()
     }
@@ -29,15 +32,37 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        signInBtn = view.findViewById(R.id.button)
+        emailEt = view.findViewById(R.id.editTextEmail)
+        passwordEt = view.findViewById(R.id. editTextPassword)
+
+//        val emailStr : String = emailEt.text.trim().toString()
+//        val passwordStr : String = passwordEt.text.trim().toString()
+//
+//        val cmpEmailStr: String = "abc@gmail.com"
+//        val cmpPasswordStr: String = "123456"
+//
+//
+//        signInBtn.setOnClickListener{
+//
+//            if(!(emailStr.equals(cmpEmailStr)) || !(passwordStr.equals(cmpPasswordStr))) {
+//                Toast.makeText(context, "Fill relevant fields accordingly", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            val fragmentHome = HomeFragment()
+//            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
+//            nextTransaction.replace(R.id.fragmentContainerView, fragmentHome)
+//                .addToBackStack(null)
+//                .commit()
+//
+//        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val signInBtn: Button = view.findViewById(R.id.button)
-        val emailEt: EditText = view.findViewById(R.id.editTextEmail)
-        val passwordEt : EditText = view.findViewById(R.id. editTextPassword)
 
         val emailStr : String = emailEt.text.trim().toString()
         val passwordStr : String = passwordEt.text.trim().toString()
@@ -48,11 +73,6 @@ class LoginFragment : Fragment() {
 
         signInBtn.setOnClickListener{
 
-//            if(emailStr.equals(cmpEmailStr))
-//                Toast.makeText(context, "Email Authenticated", Toast.LENGTH_SHORT).show()
-//
-//            if(passwordStr.equals(cmpPasswordStr))
-//                Toast.makeText(context, "Password Authenticated", Toast.LENGTH_SHORT).show()
             val fragmentHome = HomeFragment()
             val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
                 nextTransaction.replace(R.id.fragmentContainerView, fragmentHome)
@@ -60,10 +80,5 @@ class LoginFragment : Fragment() {
                 .commit()
 
         }
-
-
-
-
-
     }
 }

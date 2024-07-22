@@ -12,4 +12,11 @@ interface ApiRequestHandle {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ):MovieResponse
+
+    @GET("movie/upcoming")
+    suspend fun getNewMovie(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
+    ):MovieResponse
 }

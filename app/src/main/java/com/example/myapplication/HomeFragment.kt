@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
@@ -29,15 +32,18 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var adapter: CustomAdapter
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter1: CustomAdapter
+    private lateinit var adapter2: CustomAdapter
+
+    private lateinit var recyclerView1: RecyclerView
+    private lateinit var recyclerView2: RecyclerView
     private lateinit var imageList: ArrayList<ImageLoad>
 
     private lateinit var movieRating: Array<String>
     private lateinit var movieImage: Array<Int>
-    private lateinit var imageLoadList : ArrayList<ImageLoad>
+    private lateinit var imageLoadList: ArrayList<ImageLoad>
+    private lateinit var movieViewModel: MovieViewModel
     private val apiRequestHandle = RetrofitBuilder.instance.create(ApiRequestHandle::class.java)
-    private val apiKey="316373081224cd654e971158dc41dc51"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,54 +59,51 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-
-
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        initializeData()
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.hasFixedSize()
+        //Initialize both recyclerViews
+        initializeRecyclerView(view)
 
-        adapter = CustomAdapter(imageList, requireContext())
-        recyclerView.adapter = adapter
+        //initialize viewModel for api Requests
+        val movieViewModel: MovieViewModel by viewModels {
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val movieResponse = apiRequestHandle.getMovie(apiKey)
-                onSuccess(movieResponse)
 
-                imageLoadList?.let {
-                    adapter.populate(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            movieViewModel.movieStateFlow.collect { movieResponse ->
+                movieResponse?.let { response ->
+                    // Handle successful response
+                    adapter1.onSuccessPopulate(movieResponse)
+
+                } ?: run {
+                    // Handle null response or error state
+                    Log.d("Home Fragment", "Error in API call or null response")
                 }
-            }
-            catch (e: Exception)
-            {
-                Log.d("Home Fragment", "Error in api call")
             }
 
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            movieViewModel.newMovieStateFlow.collect { movieResponse ->
+                movieResponse?.let { response ->
+                    // Handle successful response
+                    adapter2.onSuccessPopulate(response)
 
-        adapter.populate(imageList)
+                } ?: run {
+                    // Handle null response or error state
+                    Log.d("Home Fragment", "Error in API call or null response")
+                }
+            }
+        }
+
+        // Trigger the API call to fetch movie data
+        movieViewModel.fetchMovie()
+        movieViewModel.fetchUpcomingMovies()
 
         return view
     }
 
-    private fun onSuccess(movieResponse: MovieResponse) {
-        imageLoadList = arrayListOf<ImageLoad>()
-        movieResponse.results
-        for (result in movieResponse.results) {
-
-            val imageUrl = "https://image.tmdb.org/t/p/w500${result.posterPath}"
-            val rating = result.voteAverage.toFloat() // Convert to integer rating
-
-            val imageLoad = ImageLoad(imageUrl, rating)
-            imageLoadList.add(imageLoad)
-        }
-
-    }
 
     companion object {
         /**
@@ -121,11 +124,52 @@ class HomeFragment : Fragment() {
                 }
             }
     }
-    private fun initializeData()
-    {
+
+    private fun initializeRecyclerView(view: View): View {
+        recyclerView1 = view.findViewById(R.id.recyclerView1)
+        recyclerView2 = view.findViewById(R.id.recyclerView2)
+
+        recyclerView1.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView1.hasFixedSize()
+
+        recyclerView2.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView1.hasFixedSize()
+
+
         imageList = arrayListOf<ImageLoad>()
-        movieRating = arrayOf( getString(R.string.dummyRating), getString(R.string.dummyRating))
-        movieImage = arrayOf(R.drawable.image, R.drawable.image)
+        adapter1 = CustomAdapter(imageList, requireContext())
+        adapter2 = CustomAdapter(imageList, requireContext())
+
+        recyclerView1.adapter = adapter1
+        recyclerView2.adapter = adapter2
+
+        return view
+    }
+}
+/*Parsing the api result list to get needed items*/
+//    private fun onSuccess(movieResponse: MovieResponse) {
+//        imageLoadList = arrayListOf<ImageLoad>()
+//        movieResponse.results
+//        for (result in movieResponse.results) {
+//
+//            val imageUrl = "https://image.tmdb.org/t/p/w500${result.posterPath}"
+//            val rating = result.voteAverage.toFloat() // Convert to integer rating
+//
+//            val imageLoad = ImageLoad(imageUrl, rating)
+//            imageLoadList.add(imageLoad)
+//        }
+//
+//    }
+
+/*Dummy function to check recycler view and adapter attachment*/
+
+//    private fun initializeData()
+//    {
+//        imageList = arrayListOf<ImageLoad>()
+//        movieRating = arrayOf( getString(R.string.dummyRating), getString(R.string.dummyRating))
+//        movieImage = arrayOf(R.drawable.image, R.drawable.image)
 
 //        for (i in movieImage.indices)
 //        {
@@ -133,6 +177,4 @@ class HomeFragment : Fragment() {
 //            imageList.add(newItem)
 //        }
 
-    }
-
-}
+//}

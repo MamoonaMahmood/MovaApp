@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import MovieResponse
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -23,24 +24,40 @@ class CustomAdapter(private var ImageList : ArrayList<ImageLoad>, private val co
 
     override fun onBindViewHolder(holder: CustomAdapter.MyViewHolder, position: Int) {
        val currentItem = ImageList[position]
-//        holder.apply {
-//            RatingUrlView.text = currentItem.rating.toString()
-//            if (currentItem.imageUrl != null) {
-//                Glide.with(context)
-//                    .load(currentItem.imageUrl)
-//                    .into(imageUrlView)
-//            } else {
-//                imageUrlView.setImageResource(R.drawable.image)
-//            }
-//
-//        }
+        holder.apply {
+            RatingUrlView.text = currentItem.rating.toString()
+            if (currentItem.imageUrl != null) {
+                Glide.with(context)
+                    .load(currentItem.imageUrl)
+                    .into(imageUrlView)
+            } else {
+                imageUrlView.setImageResource(R.drawable.image)
+            }
 
-        holder.imageUrlView.setImageResource(R.drawable.image)
-        holder.RatingUrlView.text = currentItem.rating.toString()
+        }
+
+//        holder.imageUrlView.setImageResource(R.drawable.image)
+//        holder.RatingUrlView.text = currentItem.rating.toString()
     }
     fun populate( arrayList: ArrayList<ImageLoad>)
     {
         ImageList = arrayList
+        notifyDataSetChanged()
+    }
+
+    fun onSuccessPopulate(movieResponse: MovieResponse)
+    {
+        val imageLoadList = arrayListOf<ImageLoad>()
+        movieResponse.results
+        for (result in movieResponse.results) {
+
+            val imageUrl = "https://image.tmdb.org/t/p/w500${result.posterPath}"
+            val rating = result.voteAverage.toFloat() // Convert to integer rating
+
+            val imageLoad = ImageLoad(imageUrl, rating)
+            imageLoadList.add(imageLoad)
+        }
+        ImageList = imageLoadList
         notifyDataSetChanged()
     }
 

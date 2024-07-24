@@ -5,6 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,13 +25,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FragmentAfterLogin.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentAfterLogin : Fragment() {
+class FragmentAfterLogin : NavHostFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -34,8 +44,31 @@ class FragmentAfterLogin : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_after_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_after_login, container, false)
+
+        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
+        val navController = this.findNavController()
+        val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
+        navView.setupWithNavController(navController)
+
+
+        val activity = requireActivity()
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.navigation_home, R.id.navigation_explore,  R.id.navigation_myList)
+        )
+        //setupActionBarWithNavController(activity,navController, appBarConfiguration)
+        return view
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2)
+//        //val navController = binding.container.getFragment<NavHostFragment>().navController
+//        val navController = this.findNavController()
+//        val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
+//        navView.setupWithNavController(navController)
+//    }
 
     companion object {
         /**

@@ -39,12 +39,6 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView2: RecyclerView
     private lateinit var imageList: ArrayList<ImageLoad>
 
-    private lateinit var movieRating: Array<String>
-    private lateinit var movieImage: Array<Int>
-    private lateinit var imageLoadList: ArrayList<ImageLoad>
-    private lateinit var movieViewModel: MovieViewModel
-    private val apiRequestHandle = RetrofitBuilder.instance.create(ApiRequestHandle::class.java)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,7 +142,18 @@ class HomeFragment : Fragment() {
         return view
     }
 }
+
+/*Initializations for previous version*/
+
+//private lateinit var movieRating: Array<String>
+//private lateinit var movieImage: Array<Int>
+//private lateinit var imageLoadList: ArrayList<ImageLoad>
+//private lateinit var movieViewModel: MovieViewModel
+//private val apiRequestHandle = RetrofitBuilder.instance.create(ApiRequestHandle::class.java)
+
+
 /*Parsing the api result list to get needed items*/
+
 //    private fun onSuccess(movieResponse: MovieResponse) {
 //        imageLoadList = arrayListOf<ImageLoad>()
 //        movieResponse.results

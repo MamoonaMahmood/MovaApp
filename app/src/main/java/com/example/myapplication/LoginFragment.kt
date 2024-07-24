@@ -72,10 +72,10 @@ class LoginFragment : Fragment() {
 
 
         signInBtn.setOnClickListener{
-
+3
             val fragmentHome = HomeFragment()
             val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                nextTransaction.replace(R.id.fragmentContainerView, fragmentHome)
+                nextTransaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
                 .addToBackStack(null)
                 .commit()
 

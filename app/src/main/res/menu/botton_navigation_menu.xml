@@ -5,9 +5,11 @@
     <item android:title="Home"
           android:icon="@drawable/home_unselected_icon"
           android:id="@+id/navigation_home"/>
+
     <item android:title="Explore"
         android:icon="@drawable/discovery_unselected_icon"
         android:id="@+id/navigation_explore"/>
+
     <item android:title="My List"
         android:icon="@drawable/bookmark_unselected_icon"
         android:id="@+id/navigation_myList"/>

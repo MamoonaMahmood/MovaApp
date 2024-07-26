@@ -1,11 +1,13 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FragmentAfterLogin.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentAfterLogin : NavHostFragment() {
+class FragmentAfterLogin : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -46,29 +48,41 @@ class FragmentAfterLogin : NavHostFragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_after_login, container, false)
 
-        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
-        val navController = this.findNavController()
-        val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
-        navView.setupWithNavController(navController)
-
-
-        val activity = requireActivity()
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_home, R.id.navigation_explore,  R.id.navigation_myList)
-        )
-        //setupActionBarWithNavController(activity,navController, appBarConfiguration)
-        return view
-    }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2)
-//        //val navController = binding.container.getFragment<NavHostFragment>().navController
+//        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
 //        val navController = this.findNavController()
 //        val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
 //        navView.setupWithNavController(navController)
-//    }
+//
+//
+//        val activity = requireActivity()
+//
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(R.id.navigation_home, R.id.navigation_explore,  R.id.navigation_myList)
+//        )
+//        //setupActionBarWithNavController(activity,navController, appBarConfiguration)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val navHostFragment = parentFragmentManager.findFragmentById(R.id.fragmentContainerView2)
+                as? NavHostFragment
+        navHostFragment?.let {
+
+            val navController = it.navController
+            val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
+            navView.setupWithNavController(navController)
+        } ?: run {
+            // Handle the case where NavHostFragment is not found
+            Log.e("FragmentAfterLogin", "NavHostFragment not found")
+        }
+
+        }
+        //val navController = binding.container.getFragment<NavHostFragment>().navController
+//        val navController = this.findNavController()
+//        val navView: BottomNavigationView = view.findViewById(R.id.bottomNavView)
+//        navView.setupWithNavController(navController)
+
 
     companion object {
         /**

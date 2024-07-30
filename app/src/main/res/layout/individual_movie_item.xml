@@ -22,15 +22,15 @@
     <TextView
         android:id="@+id/ratingItem"
         android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:padding="1dp"
         android:text="8.6"
-        android:textAlignment="center"
         android:textStyle="bold"
-        android:background="@drawable/rounded_edittext"
-        android:backgroundTint="@color/white"
-        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:background="@drawable/card_view_rating"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

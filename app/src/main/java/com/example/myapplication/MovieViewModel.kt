@@ -17,6 +17,9 @@ public class MovieViewModel(private val movieRepo: MovieRepo): ViewModel() {
     val movieStateFlow = _movieStateFlow
     private val _newMovieStateFlow = MutableStateFlow<MovieResponse?>(null)
     val newMovieStateFlow = _newMovieStateFlow
+    private val _popMovieStateFlow = MutableStateFlow<MovieResponse?>(null)
+    val popMovieStateFlow = _popMovieStateFlow
+
     private val apiKey="316373081224cd654e971158dc41dc51"
 
     public constructor() : this(MovieRepo()) {
@@ -50,6 +53,20 @@ public class MovieViewModel(private val movieRepo: MovieRepo): ViewModel() {
             {
                 Log.e("MovieViewModel", "Error fetching upcoming movie", e)
                 _newMovieStateFlow.value = null
+            }
+        }
+    }
+    fun fetchPopularMovies()
+    {
+        viewModelScope.launch {
+            try {
+                val response = movieRepo.getPopularMovie(apiKey)
+                _popMovieStateFlow.value = response
+            }
+            catch (e: Exception)
+            {
+                Log.e("MovieViewModel", "Error fetching popular movie", e)
+                _popMovieStateFlow.value = null
             }
         }
     }

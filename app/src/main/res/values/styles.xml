@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="Widget.App.BottomNavigationView.Selected" parent="Widget.MaterialComponents.BottomNavigationView">
+            <item name="backgroundColor">@color/default_bottom_nav</item>
+            <item name="background">@color/default_bottom_nav</item>
+            <item name="backgroundTint">@color/default_bottom_nav</item>
+            <item name="itemIconTint">@color/selected_bottom_nav</item>
+            <item name="itemTextColor">@color/selected_bottom_nav</item>
+
+        </style>
+
+
+</resources>

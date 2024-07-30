@@ -1,10 +1,17 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +28,10 @@ class exploreFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var adapter: CustomAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var imageList: ArrayList<ImageLoad>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +45,35 @@ class exploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false)
+        val view = inflater.inflate(R.layout.fragment_explore, container, false)
+        recyclerView = view.findViewById(R.id.recyclerView3)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.hasFixedSize()
+        imageList = arrayListOf<ImageLoad>()
+
+        adapter = CustomAdapter(imageList, requireContext())
+        recyclerView.adapter = adapter
+
+        val movieViewModel: MovieViewModel by viewModels {
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            movieViewModel.popMovieStateFlow.collect { movieResponse ->
+                movieResponse?.let { response ->
+                    // Handle successful response
+                    adapter.onSuccessPopulate(movieResponse)
+
+                } ?: run {
+                    // Handle null response or error state
+                    Log.d("Explore Fragment", "Error in API call or null response")
+                }
+            }
+
+        }
+
+        movieViewModel.fetchPopularMovies()
+        return view
     }
 
     companion object {

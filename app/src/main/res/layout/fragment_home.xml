@@ -38,14 +38,12 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/seeAllTopMovie"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginTop="28dp"
         android:text="@string/SeeAll"
         android:textSize="16sp"
-        android:onClick="onClick"
-        android:clickable="true"
         android:textColor="@color/Red"
         android:fontFamily="@font/urbanistbold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,13 +88,11 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerView1" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/seeAllNewMovie"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
         android:text="@string/SeeAll"
-        android:onClick="onClick"
-        android:clickable="true"
         android:textSize="16sp"
         android:fontFamily="@font/urbanistbold"
         android:textColor="@color/Red"

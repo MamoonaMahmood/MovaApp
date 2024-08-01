@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +40,9 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView1: RecyclerView
     private lateinit var recyclerView2: RecyclerView
     private lateinit var imageList: ArrayList<ImageLoad>
+    private lateinit var seeAllTopMovies : TextView
+    private lateinit var seeAllTopRelease : TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +59,14 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        seeAllTopMovies = view.findViewById(R.id.seeAllTopMovie)
+        seeAllTopRelease = view.findViewById(R.id.seeAllNewMovie)
+
+        seeAllTopMovies.setOnClickListener(View.OnClickListener {
+            View ->
+            
+        })
+
 
         //Initialize both recyclerViews
         initializeRecyclerView(view)

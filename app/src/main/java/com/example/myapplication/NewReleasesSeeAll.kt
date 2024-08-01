@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -20,17 +21,18 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [exploreFragment.newInstance] factory method to
+ * Use the [NewReleasesSeeAll.newInstance] factory method to
  * create an instance of this fragment.
  */
-class exploreFragment : Fragment() {
+class NewReleasesSeeAll : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var customAdapter: CustomAdapter
+    private lateinit var  imageList : ArrayList<ImageLoad>
 
-    private lateinit var adapter: CustomAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var imageList: ArrayList<ImageLoad>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,34 +47,35 @@ class exploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_explore, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView3)
+        val view = inflater.inflate(R.layout.fragment_new_releases_see_all, container, false)
+
+        recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
+
         imageList = arrayListOf<ImageLoad>()
 
-        adapter = CustomAdapter(imageList, requireContext())
-        recyclerView.adapter = adapter
+        customAdapter = CustomAdapter(imageList, requireContext())
+        recyclerView.adapter = customAdapter
 
         val movieViewModel: MovieViewModel by viewModels {
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.popMovieStateFlow.collect { movieResponse ->
+            movieViewModel.newMovieStateFlow.collect { movieResponse ->
                 movieResponse?.let {
                     // Handle successful response
-                    adapter.onSuccessPopulate(movieResponse)
+                    customAdapter.onSuccessPopulate(movieResponse)
 
                 } ?: run {
                     // Handle null response or error state
-                    Log.d("Explore Fragment", "Error in API call or null response")
+                    Log.d("NewReleaseSeeAll", "Error in API call or null response")
                 }
             }
-
         }
 
-        movieViewModel.fetchPopularMovies()
+        movieViewModel.fetchUpcomingMovies()
         return view
     }
 
@@ -83,12 +86,12 @@ class exploreFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment exploreFragment.
+         * @return A new instance of fragment NewReleasesSeeAll.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            exploreFragment().apply {
+            NewReleasesSeeAll().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

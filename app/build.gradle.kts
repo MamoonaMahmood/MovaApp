@@ -52,10 +52,15 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.3.0"
+    //val nav_version = "2.3.0"
 
-    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation (libs.androidx.navigation.fragment.ktx.v230)
+    implementation (libs.androidx.navigation.ui.ktx.v230)
+
+    //val paging_version = "3.3.1"
+
+    implementation (libs.androidx.paging.runtime)
+
     implementation(libs.androidx.runtime.saved.instance.state)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

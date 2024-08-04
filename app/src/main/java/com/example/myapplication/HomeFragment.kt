@@ -1,23 +1,20 @@
 package com.example.myapplication
 
-import MovieResponse
+import MovieRepoWithPaging
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,9 +34,11 @@ class HomeFragment : Fragment() {
     private lateinit var adapter1: CustomAdapter
     private lateinit var adapter2: CustomAdapter
 
-    private lateinit var recyclerView1: RecyclerView
-    private lateinit var recyclerView2: RecyclerView
-    private lateinit var imageList: ArrayList<ImageLoad>
+    private lateinit var topTenPagingAdapter: MoviePagingAdapter
+    private lateinit var newReleasePagingAdapter: MoviePagingAdapter
+
+    private lateinit var topTenRecyclerView: RecyclerView
+    private lateinit var newReleaseRecyclerView: RecyclerView
     private lateinit var seeAllTopMovies : TextView
     private lateinit var seeAllTopRelease : TextView
 
@@ -64,49 +63,65 @@ class HomeFragment : Fragment() {
 
         seeAllTopMovies.setOnClickListener(View.OnClickListener {
             View ->
-            
+
         })
 
 
         //Initialize both recyclerViews
         initializeRecyclerView(view)
-
-        //initialize viewModel for api Requests
-        val movieViewModel: MovieViewModel by viewModels {
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        }
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.movieStateFlow.collect { movieResponse ->
-                movieResponse?.let { response ->
-                    // Handle successful response
-                    adapter1.onSuccessPopulate(movieResponse)
-
-                } ?: run {
-                    // Handle null response or error state
-                    Log.d("Home Fragment", "Error in API call or null response")
-                }
-            }
-
+        val movieRepo = GetRepository()
+        val newMovieViewModel: NewMovieViewModel by viewModels {
+            NewMovieViewModelFactory(movieRepo)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.newMovieStateFlow.collect { movieResponse ->
-                movieResponse?.let { response ->
-                    // Handle successful response
-                    adapter2.onSuccessPopulate(response)
-
-                } ?: run {
-                    // Handle null response or error state
-                    Log.d("Home Fragment", "Error in API call or null response")
-                }
+            newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
+                topTenPagingAdapter.submitData(pagingData)
             }
         }
 
-        // Trigger the API call to fetch movie data
-        movieViewModel.fetchMovie()
-        movieViewModel.fetchUpcomingMovies()
+        viewLifecycleOwner.lifecycleScope.launch {
+            newMovieViewModel.upComingMovies.collectLatest { pagingData ->
+                newReleasePagingAdapter.submitData(pagingData)
+            }
+        }
+
+//        //initialize viewModel for api Requests
+//        val movieViewModel: MovieViewModel by viewModels {
+//            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+//        }
+//
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            movieViewModel.movieStateFlow.collect { movieResponse ->
+//                movieResponse?.let { response ->
+//                    // Handle successful response
+//                    adapter1.onSuccessPopulate(movieResponse)
+//
+//                } ?: run {
+//                    // Handle null response or error state
+//                    Log.d("Home Fragment", "Error in API call or null response")
+//                }
+//            }
+//
+//        }
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            movieViewModel.newMovieStateFlow.collect { movieResponse ->
+//                movieResponse?.let { response ->
+//                    // Handle successful response
+//                    adapter2.onSuccessPopulate(response)
+//
+//                } ?: run {
+//                    // Handle null response or error state
+//                    Log.d("Home Fragment", "Error in API call or null response")
+//                }
+//            }
+//        }
+//
+//        // Trigger the API call to fetch movie data
+//        movieViewModel.fetchMovie()
+//        movieViewModel.fetchUpcomingMovies()
 
         return view
     }
@@ -133,66 +148,32 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeRecyclerView(view: View): View {
-        recyclerView1 = view.findViewById(R.id.recyclerView1)
-        recyclerView2 = view.findViewById(R.id.recyclerView2)
+        topTenRecyclerView = view.findViewById(R.id.recyclerView1)
+        newReleaseRecyclerView = view.findViewById(R.id.recyclerView2)
 
-        recyclerView1.layoutManager =
+        topTenRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView1.hasFixedSize()
+        topTenRecyclerView.hasFixedSize()
 
-        recyclerView2.layoutManager =
+        newReleaseRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView1.hasFixedSize()
+        topTenRecyclerView.hasFixedSize()
 
+        topTenPagingAdapter = MoviePagingAdapter()
+        newReleasePagingAdapter = MoviePagingAdapter()
 
-        imageList = arrayListOf<ImageLoad>()
-        adapter1 = CustomAdapter(imageList, requireContext())
-        adapter2 = CustomAdapter(imageList, requireContext())
-
-        recyclerView1.adapter = adapter1
-        recyclerView2.adapter = adapter2
+        topTenRecyclerView.adapter = topTenPagingAdapter
+        newReleaseRecyclerView.adapter = newReleasePagingAdapter
 
         return view
     }
+    fun GetRepository(): MovieRepoWithPaging
+    {
+        val apiService: ApiRequestHandle = RetrofitBuilder.create()
+        val movieRepo = MovieRepoWithPaging(apiService)
+
+        return movieRepo
+    }
 }
 
-/*Initializations for previous version*/
 
-//private lateinit var movieRating: Array<String>
-//private lateinit var movieImage: Array<Int>
-//private lateinit var imageLoadList: ArrayList<ImageLoad>
-//private lateinit var movieViewModel: MovieViewModel
-//private val apiRequestHandle = RetrofitBuilder.instance.create(ApiRequestHandle::class.java)
-
-
-/*Parsing the api result list to get needed items*/
-
-//    private fun onSuccess(movieResponse: MovieResponse) {
-//        imageLoadList = arrayListOf<ImageLoad>()
-//        movieResponse.results
-//        for (result in movieResponse.results) {
-//
-//            val imageUrl = "https://image.tmdb.org/t/p/w500${result.posterPath}"
-//            val rating = result.voteAverage.toFloat() // Convert to integer rating
-//
-//            val imageLoad = ImageLoad(imageUrl, rating)
-//            imageLoadList.add(imageLoad)
-//        }
-//
-//    }
-
-/*Dummy function to check recycler view and adapter attachment*/
-
-//    private fun initializeData()
-//    {
-//        imageList = arrayListOf<ImageLoad>()
-//        movieRating = arrayOf( getString(R.string.dummyRating), getString(R.string.dummyRating))
-//        movieImage = arrayOf(R.drawable.image, R.drawable.image)
-
-//        for (i in movieImage.indices)
-//        {
-//            val newItem = ImageLoad(movieRating[i], movieImage[i])
-//            imageList.add(newItem)
-//        }
-
-//}

@@ -16,4 +16,7 @@ object RetrofitBuilder {
     val api : ApiRequestHandle by lazy {
         instance.create(ApiRequestHandle::class.java)
     }
+
+    fun create (): ApiRequestHandle = Retrofit.Builder().baseUrl(BaseUrl.url).addConverterFactory(GsonConverterFactory.create())
+        .build().create(ApiRequestHandle::class.java)
 }

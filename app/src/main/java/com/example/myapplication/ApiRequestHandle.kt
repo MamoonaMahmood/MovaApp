@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import MovieResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiRequestHandle {
@@ -26,4 +27,5 @@ interface ApiRequestHandle {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ):MovieResponse
+
 }

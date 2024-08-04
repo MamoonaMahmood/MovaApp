@@ -12,26 +12,33 @@ import okio.IOException
 import java.lang.Error
 import kotlin.coroutines.CoroutineContext
 
+const val apiKey : String = "316373081224cd654e971158dc41dc51"
 class MoviePagingSource(
     private val apiService: ApiRequestHandle,
-    private val apiKey: String
+    private val path: String
 ) : PagingSource<Int,MovieResult>()
 {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResult> {
-        try {
+        return try {
             // Start refresh at page 1 if undefined.
             val pageNumber = params.key ?: 1
-            val response = apiService.getPopularMovie(apiKey, page = pageNumber)
-            return LoadResult.Page(
+            val response = when (path) {
+                "movie/popular" -> apiService.getPopularMovie(apiKey, page = pageNumber)
+                "movie/top_rated" -> apiService.getMovie(apiKey, page = pageNumber)
+                "movie/upcoming" -> apiService.getNewMovie(apiKey, page = pageNumber)
+                else -> throw IllegalArgumentException("Invalid path")
+            }
+            LoadResult.Page(
                 data = response.results,
-                prevKey = if (pageNumber == 1 ) null else 1, // Only paging forward.
-                nextKey = if( response.results.isEmpty()) null else pageNumber + 1
+                prevKey = if (pageNumber == 1 ) null else pageNumber - 1, // Only paging forward.
+                nextKey = if(response.results.isEmpty()) null else pageNumber + 1 //???????
             )
         } catch (e: IOException) {
-            return LoadResult.Error(e)
+            LoadResult.Error(e)
         } catch (e: HttpException) {
-            return LoadResult.Error(e)
+            Log.e("MoviePagingSource", "Error URL")
+            LoadResult.Error(e)
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import MovieRepoWithPaging
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.paging.PagingDataAdapter
+import androidx.paging.PagingData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +33,8 @@ class exploreFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var adapter: CustomAdapter
+    private lateinit var customAdapter : MoviePagingAdapter
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageList: ArrayList<ImageLoad>
 
@@ -51,28 +57,22 @@ class exploreFragment : Fragment() {
         recyclerView.hasFixedSize()
         imageList = arrayListOf<ImageLoad>()
 
-        adapter = CustomAdapter(imageList, requireContext())
-        recyclerView.adapter = adapter
+        val moviePagingAdapter = MoviePagingAdapter()
+        recyclerView.adapter = moviePagingAdapter
 
-        val movieViewModel: MovieViewModel by viewModels {
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        val apiService: ApiRequestHandle = RetrofitBuilder.create()
+
+        val movieRepo = MovieRepoWithPaging(apiService)
+        val newMovieViewModel: NewMovieViewModel by viewModels {
+            NewMovieViewModelFactory(movieRepo)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.popMovieStateFlow.collect { movieResponse ->
-                movieResponse?.let {
-                    // Handle successful response
-                    adapter.onSuccessPopulate(movieResponse)
-
-                } ?: run {
-                    // Handle null response or error state
-                    Log.d("Explore Fragment", "Error in API call or null response")
-                }
+            newMovieViewModel.popularMoviesFlow.collectLatest { pagingData ->
+                moviePagingAdapter.submitData(pagingData)
             }
-
         }
 
-        movieViewModel.fetchPopularMovies()
         return view
     }
 

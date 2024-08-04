@@ -1,16 +1,20 @@
 package com.example.myapplication
 
+import com.example.myapplication.Repository.MovieRepoWithPaging
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Network.ApiRequestHandle
+import com.example.myapplication.Network.RetrofitBuilder
+import com.example.myapplication.ViewModel.NewMovieViewModel
+import com.example.myapplication.ViewModel.NewMovieViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,8 +32,7 @@ class TopMoviesSeeAll : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var recyclerView: RecyclerView
-    private lateinit var customAdapter: CustomAdapter
-    private lateinit var imageList: ArrayList<ImageLoad>
+    private lateinit var topMoviePagingAdapter: MoviePagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,26 +52,23 @@ class TopMoviesSeeAll : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
 
-        imageList = arrayListOf()
+        topMoviePagingAdapter = MoviePagingAdapter()
+        recyclerView.adapter = topMoviePagingAdapter
 
-        //customAdapter = CustomAdapter(imageList, requireContext())
-        recyclerView.adapter = CustomAdapter(imageList, requireContext())
+        val apiService: ApiRequestHandle = RetrofitBuilder.create()
+        val movieRepo = MovieRepoWithPaging(apiService)
 
-        val movieViewModel: MovieViewModel by viewModels {
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        val newMovieViewModel: NewMovieViewModel by viewModels {
+            NewMovieViewModelFactory(movieRepo)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.newMovieStateFlow.collect{ movieResponse ->
-                movieResponse?.let {
-                    customAdapter.onSuccessPopulate(movieResponse)
-                }
-                    ?: run {
-                    Log.d("TopMoviesSeeAll", "Error in API call or null response")
-                }
-                movieViewModel.fetchPopularMovies()
+            newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
+                topMoviePagingAdapter.submitData(pagingData)
             }
         }
+
+
 
         return view
     }

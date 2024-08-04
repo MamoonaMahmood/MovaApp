@@ -1,8 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.Network
 
-import MovieResponse
+import com.example.myapplication.Data.MovieResponse
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiRequestHandle {
@@ -12,20 +11,20 @@ interface ApiRequestHandle {
         @Query("api_key") apiKey: String,
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
-    ):MovieResponse
+    ): MovieResponse
 
     @GET("movie/upcoming")
     suspend fun getNewMovie(
         @Query("api_key") apiKey: String,
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
-    ):MovieResponse
+    ): MovieResponse
 
     @GET("movie/popular")
     suspend fun getPopularMovie(
         @Query("api_key") apiKey: String,
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
-    ):MovieResponse
+    ): MovieResponse
 
 }

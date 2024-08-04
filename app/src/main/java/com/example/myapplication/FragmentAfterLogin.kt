@@ -39,13 +39,7 @@ class FragmentAfterLogin : NavHostFragment() {
     private var param2: String? = null
 
     private lateinit var bottomNavigationView: BottomNavigationView
-
     private lateinit var fragmentContainerView: FragmentContainerView
-
-
-//   public val navController by lazy {
-//      (parentFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment).navController
-//   }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,42 +63,15 @@ class FragmentAfterLogin : NavHostFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navHostFragment = childFragmentManager.findFragmentById(R.id.fragmentContainerView2)
-
         fragmentContainerView = view.findViewById<FragmentContainerView>(R.id.fragmentContainerView2)
         val navController = fragmentContainerView.findNavController()
-
 
 
         bottomNavigationView = view.findViewById(R.id.bottomNavView)
         bottomNavigationView.setupWithNavController(navController)
 
-//        bottomNavigationView.setOnItemSelectedListener {  item ->
-//            // Change color to red on selection
-//            setBottomNavViewColor(ContextCompat.getColor(requireContext(), R.color.selected_bottom_nav))
-//            true
-//        }
-//
-//
-//        setBottomNavViewColor(ContextCompat.getColor(requireContext(), R.color.default_bottom_nav))
 
     }
-
-    private fun setBottomNavViewColor(color: Int) {
-        bottomNavigationView.setBackgroundColor(color)
-        bottomNavigationView.itemIconTintList = createColorStateList(color)
-        bottomNavigationView.itemTextColor = createColorStateList(color)
-    }
-
-    private fun createColorStateList(color: Int): ColorStateList {
-        return ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_checked),
-                intArrayOf()
-            ),
-            intArrayOf(color, color) // selected color, default color
-        )
-    }
-
 
     companion object {
         /**

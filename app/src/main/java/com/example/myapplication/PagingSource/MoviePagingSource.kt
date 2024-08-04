@@ -1,22 +1,20 @@
-package com.example.myapplication
+package com.example.myapplication.PagingSource
 
-import MovieResult
-import android.graphics.pdf.PdfDocument.Page
+import com.example.myapplication.Data.MovieResult
 import android.net.http.HttpException
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.myapplication.Network.ApiRequestHandle
 import okio.IOException
-import java.lang.Error
-import kotlin.coroutines.CoroutineContext
 
 const val apiKey : String = "316373081224cd654e971158dc41dc51"
 class MoviePagingSource(
     private val apiService: ApiRequestHandle,
     private val path: String
-) : PagingSource<Int,MovieResult>()
+) : PagingSource<Int, MovieResult>()
 {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResult> {

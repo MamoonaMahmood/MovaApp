@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-import MovieResult
+import com.example.myapplication.Data.MovieResult
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.IndividualMovieItemBinding
 
-class MoviePagingAdapter : PagingDataAdapter<MovieResult , MoviePagingAdapter.MovieViewHolder>(MovieResultDiffCallback()) {
+class MoviePagingAdapter : PagingDataAdapter<MovieResult, MoviePagingAdapter.MovieViewHolder>(MovieResultDiffCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

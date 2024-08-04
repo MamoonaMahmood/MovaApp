@@ -1,18 +1,20 @@
 package com.example.myapplication
 
-import MovieRepoWithPaging
+import com.example.myapplication.Repository.MovieRepoWithPaging
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Network.ApiRequestHandle
+import com.example.myapplication.Network.RetrofitBuilder
+import com.example.myapplication.ViewModel.NewMovieViewModel
+import com.example.myapplication.ViewModel.NewMovieViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -30,9 +32,6 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    private lateinit var adapter1: CustomAdapter
-    private lateinit var adapter2: CustomAdapter
 
     private lateinit var topTenPagingAdapter: MoviePagingAdapter
     private lateinit var newReleasePagingAdapter: MoviePagingAdapter
@@ -61,10 +60,22 @@ class HomeFragment : Fragment() {
         seeAllTopMovies = view.findViewById(R.id.seeAllTopMovie)
         seeAllTopRelease = view.findViewById(R.id.seeAllNewMovie)
 
-        seeAllTopMovies.setOnClickListener(View.OnClickListener {
-            View ->
+        seeAllTopMovies.setOnClickListener{
 
-        })
+            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            nextTransaction.replace(R.id.fragmentContainerView, TopMoviesSeeAll())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        seeAllTopRelease.setOnClickListener{
+
+            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            nextTransaction.replace(R.id.fragmentContainerView, NewReleasesSeeAll())
+                .addToBackStack(null)
+                .commit()
+
+        }
 
 
         //Initialize both recyclerViews
@@ -85,44 +96,6 @@ class HomeFragment : Fragment() {
                 newReleasePagingAdapter.submitData(pagingData)
             }
         }
-
-//        //initialize viewModel for api Requests
-//        val movieViewModel: MovieViewModel by viewModels {
-//            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-//        }
-//
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            movieViewModel.movieStateFlow.collect { movieResponse ->
-//                movieResponse?.let { response ->
-//                    // Handle successful response
-//                    adapter1.onSuccessPopulate(movieResponse)
-//
-//                } ?: run {
-//                    // Handle null response or error state
-//                    Log.d("Home Fragment", "Error in API call or null response")
-//                }
-//            }
-//
-//        }
-//
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            movieViewModel.newMovieStateFlow.collect { movieResponse ->
-//                movieResponse?.let { response ->
-//                    // Handle successful response
-//                    adapter2.onSuccessPopulate(response)
-//
-//                } ?: run {
-//                    // Handle null response or error state
-//                    Log.d("Home Fragment", "Error in API call or null response")
-//                }
-//            }
-//        }
-//
-//        // Trigger the API call to fetch movie data
-//        movieViewModel.fetchMovie()
-//        movieViewModel.fetchUpcomingMovies()
-
         return view
     }
 

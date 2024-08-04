@@ -1,8 +1,11 @@
+package com.example.myapplication.Repository
+
+import com.example.myapplication.Data.MovieResult
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.myapplication.ApiRequestHandle
-import com.example.myapplication.MoviePagingSource
+import com.example.myapplication.Network.ApiRequestHandle
+import com.example.myapplication.PagingSource.MoviePagingSource
 import kotlinx.coroutines.flow.Flow
 
 class MovieRepoWithPaging(private val apiService: ApiRequestHandle) {

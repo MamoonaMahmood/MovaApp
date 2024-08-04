@@ -1,17 +1,20 @@
 package com.example.myapplication
 
+import com.example.myapplication.Repository.MovieRepoWithPaging
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.example.myapplication.Network.ApiRequestHandle
+import com.example.myapplication.Network.RetrofitBuilder
+import com.example.myapplication.ViewModel.NewMovieViewModel
+import com.example.myapplication.ViewModel.NewMovieViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,8 +32,8 @@ class NewReleasesSeeAll : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var recyclerView : RecyclerView
-    private lateinit var customAdapter: CustomAdapter
-    private lateinit var  imageList : ArrayList<ImageLoad>
+    private lateinit var newReleaseAdapter: MoviePagingAdapter
+
 
 
 
@@ -53,29 +56,22 @@ class NewReleasesSeeAll : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
 
-        imageList = arrayListOf<ImageLoad>()
 
-        customAdapter = CustomAdapter(imageList, requireContext())
-        recyclerView.adapter = customAdapter
+        newReleaseAdapter = MoviePagingAdapter()
+        recyclerView.adapter = newReleaseAdapter
 
-        val movieViewModel: MovieViewModel by viewModels {
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        val apiService: ApiRequestHandle = RetrofitBuilder.create()
+        val movieRepo = MovieRepoWithPaging(apiService)
+
+        val newMovieViewModel: NewMovieViewModel by viewModels {
+            NewMovieViewModelFactory(movieRepo)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            movieViewModel.newMovieStateFlow.collect { movieResponse ->
-                movieResponse?.let {
-                    // Handle successful response
-                    customAdapter.onSuccessPopulate(movieResponse)
-
-                } ?: run {
-                    // Handle null response or error state
-                    Log.d("NewReleaseSeeAll", "Error in API call or null response")
-                }
+            newMovieViewModel.upComingMovies.collectLatest { pagingData ->
+                newReleaseAdapter.submitData(pagingData)
             }
         }
-
-        movieViewModel.fetchUpcomingMovies()
         return view
     }
 

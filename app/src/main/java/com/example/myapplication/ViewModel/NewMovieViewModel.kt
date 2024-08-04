@@ -1,7 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.ViewModel
 
-import MovieRepoWithPaging
-import MovieResult
+import com.example.myapplication.Repository.MovieRepoWithPaging
+import com.example.myapplication.Data.MovieResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope

@@ -19,7 +19,6 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
-    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,49 +35,17 @@ class LoginFragment : Fragment() {
         signInBtn = view.findViewById(R.id.button)
         emailEt = view.findViewById(R.id.editTextEmail)
         passwordEt = view.findViewById(R.id. editTextPassword)
-
-//        val emailStr : String = emailEt.text.trim().toString()
-//        val passwordStr : String = passwordEt.text.trim().toString()
-//
-//        val cmpEmailStr: String = "abc@gmail.com"
-//        val cmpPasswordStr: String = "123456"
-//
-//
-//        signInBtn.setOnClickListener{
-//
-//            if(!(emailStr.equals(cmpEmailStr)) || !(passwordStr.equals(cmpPasswordStr))) {
-//                Toast.makeText(context, "Fill relevant fields accordingly", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            val fragmentHome = HomeFragment()
-//            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
-//            nextTransaction.replace(R.id.fragmentContainerView, fragmentHome)
-//                .addToBackStack(null)
-//                .commit()
-//
-//        }
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val emailStr : String = emailEt.text.trim().toString()
-        val passwordStr : String = passwordEt.text.trim().toString()
-
-        val cmpEmailStr: String = "abc@gmail.com"
-        val cmpPasswordStr: String = "123456"
-
-
         signInBtn.setOnClickListener{
-3
-            val fragmentHome = HomeFragment()
             val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
                 nextTransaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
                 .addToBackStack(null)
                 .commit()
-
         }
     }
 }

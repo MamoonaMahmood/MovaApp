@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Network.ApiRequestHandle
 import com.example.myapplication.Network.RetrofitBuilder
 import com.example.myapplication.ViewModel.NewMovieViewModel
-import com.example.myapplication.ViewModel.NewMovieViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -74,16 +74,13 @@ class HomeFragment : Fragment() {
             nextTransaction.replace(R.id.fragmentContainerView, NewReleasesSeeAll())
                 .addToBackStack(null)
                 .commit()
-
         }
 
 
         //Initialize both recyclerViews
         initializeRecyclerView(view)
-        val movieRepo = GetRepository()
-        val newMovieViewModel: NewMovieViewModel by viewModels {
-            NewMovieViewModelFactory(movieRepo)
-        }
+
+        val newMovieViewModel = NewMovieViewModel()
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
@@ -139,13 +136,6 @@ class HomeFragment : Fragment() {
         newReleaseRecyclerView.adapter = newReleasePagingAdapter
 
         return view
-    }
-    fun GetRepository(): MovieRepoWithPaging
-    {
-        val apiService: ApiRequestHandle = RetrofitBuilder.create()
-        val movieRepo = MovieRepoWithPaging(apiService)
-
-        return movieRepo
     }
 }
 

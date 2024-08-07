@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Network.ApiRequestHandle
 import com.example.myapplication.Network.RetrofitBuilder
 import com.example.myapplication.ViewModel.NewMovieViewModel
-import com.example.myapplication.ViewModel.NewMovieViewModelFactory
+
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -60,12 +60,7 @@ class NewReleasesSeeAll : Fragment() {
         newReleaseAdapter = MoviePagingAdapter()
         recyclerView.adapter = newReleaseAdapter
 
-        val apiService: ApiRequestHandle = RetrofitBuilder.create()
-        val movieRepo = MovieRepoWithPaging(apiService)
-
-        val newMovieViewModel: NewMovieViewModel by viewModels {
-            NewMovieViewModelFactory(movieRepo)
-        }
+        val newMovieViewModel = NewMovieViewModel()
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.upComingMovies.collectLatest { pagingData ->

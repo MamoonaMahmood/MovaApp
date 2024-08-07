@@ -27,4 +27,13 @@ interface ApiRequestHandle {
         @Query("page") page: Int = 1
     ): MovieResponse
 
+    @GET("search/movie")
+    suspend fun SearchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
+
+    ):MovieResponse
+
 }

@@ -7,8 +7,10 @@
             <item name="backgroundTint">@color/default_bottom_nav</item>
             <item name="itemIconTint">@color/selected_bottom_nav</item>
             <item name="itemTextColor">@color/selected_bottom_nav</item>
-
         </style>
 
+        <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+            <item name="chipBackgroundColor">@color/chip_selector </item>
 
+        </style>
 </resources>

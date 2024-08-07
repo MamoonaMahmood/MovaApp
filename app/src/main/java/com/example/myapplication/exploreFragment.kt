@@ -1,21 +1,23 @@
 package com.example.myapplication
 
-import com.example.myapplication.Repository.MovieRepoWithPaging
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.SearchView
+import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.Network.ApiRequestHandle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import com.example.myapplication.Network.RetrofitBuilder
 import com.example.myapplication.ViewModel.NewMovieViewModel
-import com.example.myapplication.ViewModel.NewMovieViewModelFactory
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +34,11 @@ class exploreFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var popRecyclerView: RecyclerView
+    private lateinit var searchRecyclerView: RecyclerView
+    private lateinit var errorImage: ImageView
+    private lateinit var filterBtn: ImageButton
+    private lateinit var searchView: SearchView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,26 +55,51 @@ class exploreFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_explore, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView3)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
-        recyclerView.hasFixedSize()
+
+        filterBtn = view.findViewById(R.id.imageFilterButton)
+        searchView = view.findViewById(R.id.searchView)
+        errorImage = view.findViewById(R.id.errorImage)
+        errorImage.visibility = GONE
+
+        filterBtn.setOnClickListener{
+            val bottomSheet = BottomSheetFragment()
+            bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
+        }
+
+        popRecyclerView = view.findViewById(R.id.recyclerView3)
+        popRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        popRecyclerView.hasFixedSize()
+
 
 
         val moviePagingAdapter = MoviePagingAdapter()
-        recyclerView.adapter = moviePagingAdapter
+        popRecyclerView.adapter = moviePagingAdapter
 
-        val apiService: ApiRequestHandle = RetrofitBuilder.create()
-
-        val movieRepo = MovieRepoWithPaging(apiService)
-        val newMovieViewModel: NewMovieViewModel by viewModels {
-            NewMovieViewModelFactory(movieRepo)
-        }
+        val newMovieViewModel = NewMovieViewModel()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            newMovieViewModel.popularMoviesFlow.collectLatest { pagingData ->
+            newMovieViewModel.moviesFlow.collectLatest { pagingData ->
                 moviePagingAdapter.submitData(pagingData)
             }
         }
+
+
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                Log.d("SearchView", "Query submitted: $query")
+                newMovieViewModel.updateSearchQuery(query)
+                searchView.clearFocus() // Optionally clear focus after submission
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                Log.d("SearchView", "Query submitted: $newText")
+                newMovieViewModel.updateSearchQuery(newText)
+                return true
+            }
+        })
+
 
         return view
     }

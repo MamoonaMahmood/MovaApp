@@ -12,37 +12,38 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/white"
         android:contentDescription="backButtonforNewReleasePage"
         android:src="@drawable/back_btn_icon"
-        app:layout_constraintEnd_toStartOf="@+id/TitleText"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/TitleText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/searchBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/white"
         android:contentDescription="SearchBtnforTopMovies"
         android:src="@drawable/search_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
-        app:layout_constraintStart_toEndOf="@+id/TitleText"
-        app:layout_constraintTop_toTopOf="@+id/TitleText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TitleText"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/Top10"
         android:fontFamily="@font/urbanistbold"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text="@string/NewRelease"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -53,11 +54,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="750dp"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        app:flow_verticalAlign="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleText"
-        app:spanCount="2" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

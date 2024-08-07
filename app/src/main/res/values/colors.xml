@@ -10,5 +10,6 @@
     <color name="Red">#C1232F</color>
     <color name="default_bottom_nav">#FFFFFFFF</color>
     <color name="selected_bottom_nav">#FFC1232F</color>
+    <color name="chip_bg_color">#FFFFCCCB</color>
 </resources>
 

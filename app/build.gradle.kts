@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.androidx.fragment)
     // Kotlin
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.glide.v4xx)
 
     implementation (libs.glide)
     annotationProcessor (libs.compiler)

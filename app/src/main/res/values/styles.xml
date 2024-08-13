@@ -11,6 +11,11 @@
 
         <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
             <item name="chipBackgroundColor">@color/chip_selector </item>
+            <item name="android:textColor">@color/chip_text_style</item>
+        </style>
 
+        <style name="buttonStyle" parent="Widget.AppCompat.Button">
+            <item name="android:background">@color/bottom_sheet_buttons</item>
+            <item name="android:textColor">@color/chip_text_style</item>
         </style>
 </resources>

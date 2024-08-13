@@ -6,17 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
-import androidx.core.view.isGone
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.cachedIn
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Data.MovieResult
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
+import kotlinx.coroutines.flow.flatMapLatest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +45,7 @@ class exploreFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var popRecyclerView: RecyclerView
-    private lateinit var searchRecyclerView: RecyclerView
+    private lateinit var filterRecyclerView: RecyclerView
     private lateinit var errorImage: ImageView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
@@ -61,26 +71,44 @@ class exploreFragment : Fragment() {
         errorImage = view.findViewById(R.id.errorImage)
         errorImage.visibility = GONE
 
-        filterBtn.setOnClickListener{
-            val bottomSheet = BottomSheetFragment()
-            bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
-        }
 
-        popRecyclerView = view.findViewById(R.id.recyclerView3)
+        popRecyclerView = view.findViewById(R.id.popRecyclerView)
+        filterRecyclerView = view.findViewById(R.id.filterRecyclerView)
+
+        filterRecyclerView.layoutManager = GridLayoutManager(context, 2)
         popRecyclerView.layoutManager = GridLayoutManager(context, 2)
+
+        filterRecyclerView.hasFixedSize()
         popRecyclerView.hasFixedSize()
 
 
+        val filterPagingAdapter = MoviePagingAdapter()
+        filterRecyclerView.adapter = filterPagingAdapter
+        val popMoviePagingAdapter = MoviePagingAdapter()
+        popRecyclerView.adapter = popMoviePagingAdapter
 
-        val moviePagingAdapter = MoviePagingAdapter()
-        popRecyclerView.adapter = moviePagingAdapter
 
-        val newMovieViewModel = NewMovieViewModel()
+        val newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.moviesFlow.collectLatest { pagingData ->
-                moviePagingAdapter.submitData(pagingData)
+                popMoviePagingAdapter.submitData(pagingData)
+
             }
+        }
+
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            newMovieViewModel.filterMoviesFlow.collectLatest { pagingData->
+               filterPagingAdapter.submitData(pagingData)
+
+                popRecyclerView.visibility = INVISIBLE
+                filterRecyclerView.visibility = VISIBLE
+
+
+            }
+
         }
 
 
@@ -89,6 +117,8 @@ class exploreFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.d("SearchView", "Query submitted: $query")
                 newMovieViewModel.updateSearchQuery(query)
+                popRecyclerView.visibility = VISIBLE
+                filterRecyclerView.visibility = INVISIBLE
                 searchView.clearFocus() // Optionally clear focus after submission
                 return true
             }
@@ -96,12 +126,23 @@ class exploreFragment : Fragment() {
             override fun onQueryTextChange(newText: String): Boolean {
                 Log.d("SearchView", "Query submitted: $newText")
                 newMovieViewModel.updateSearchQuery(newText)
+                popRecyclerView.visibility = VISIBLE
+               filterRecyclerView.visibility = INVISIBLE
                 return true
             }
         })
-
-
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        filterBtn.setOnClickListener{
+            val bottomSheet = BottomSheetFragment()
+            bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
+
+
+        }
     }
 
     companion object {

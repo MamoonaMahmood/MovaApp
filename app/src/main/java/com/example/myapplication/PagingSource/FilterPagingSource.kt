@@ -5,28 +5,33 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Network.ApiRequestHandle
 import java.io.IOException
+import java.lang.Error
 
-
-class SearchPagingSource(
+class FilterPagingSource(
     private val apiService: ApiRequestHandle,
-    private val queryStr: String
-) : PagingSource<Int, MovieResult>()
+    private val filterObj: FilterObj?
+) :PagingSource<Int, MovieResult>()
 {
-
-
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResult> {
-         return try{
-            val pageNumber = params.key ?: 1
-            val response = apiService.searchMovies(apiKey, query = queryStr,page = pageNumber )
-            if (response.results.isNotEmpty()){
+        return try {
+            val pageNumber = params.key?:1
+            val response = apiService.filterMovies(apiKey, region = filterObj?.regionString,
+                sort =  filterObj?.sortString,
+                genre = filterObj?.genreString,
+                year =  filterObj?.timeString,
+                page = pageNumber)
+
+
+            if(response.results.isNotEmpty()) {
                 LoadResult.Page(
                     data = response.results,
-                    prevKey = if (pageNumber == 1 ) null else pageNumber - 1, // Only paging forward.
-                    nextKey = if(response.results.isEmpty()) null else pageNumber + 1 //???????
+                    prevKey = if (pageNumber == 1) null else pageNumber - 1,
+                    nextKey = if (response.results.isEmpty()) null else pageNumber + 1
                 )
             }
             else{
@@ -44,9 +49,9 @@ class SearchPagingSource(
         }
         catch (e: HttpException)
         {
+            e.printStackTrace()
             LoadResult.Error(e)
         }
-
 
     }
 
@@ -63,5 +68,6 @@ class SearchPagingSource(
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
+
 
 }

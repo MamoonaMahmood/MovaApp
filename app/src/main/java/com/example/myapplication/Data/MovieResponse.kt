@@ -12,6 +12,11 @@ data class MovieResult(
     val posterPath: String,
     @SerializedName("vote_average")
     val voteAverage: Double
-) {
-    fun imageUrl() = "wwwww/fgh/gfh${posterPath}"
-}
+)
+
+data class FilterObj(
+    val regionString: String,
+    val sortString: String,
+    val genreString: String,
+    val timeString: String
+)

@@ -42,9 +42,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         signInBtn.setOnClickListener{
-            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                nextTransaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
-                .addToBackStack(null)
+                parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, FragmentAfterLogin())
                 .commit()
         }
     }

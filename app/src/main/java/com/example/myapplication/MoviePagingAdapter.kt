@@ -26,6 +26,11 @@ class MoviePagingAdapter : PagingDataAdapter<MovieResult, MoviePagingAdapter.Mov
         }
     }
 
+    fun isEmpty(): Boolean {
+        // Return true if the current data is empty
+        return itemCount == 0
+    }
+
     class MovieViewHolder(private val binding: IndividualMovieItemBinding): RecyclerView.ViewHolder(binding.root)
     {
         fun bind(movieResult : MovieResult)

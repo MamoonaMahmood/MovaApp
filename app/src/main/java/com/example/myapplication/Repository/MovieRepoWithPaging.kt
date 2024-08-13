@@ -1,15 +1,16 @@
 package com.example.myapplication.Repository
 
+import android.util.Log
 import com.example.myapplication.Data.MovieResult
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.myapplication.Network.ApiRequestHandle
+import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Network.RetrofitBuilder
+import com.example.myapplication.PagingSource.FilterPagingSource
 import com.example.myapplication.PagingSource.MoviePagingSource
 import com.example.myapplication.PagingSource.SearchPagingSource
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Retrofit
 
 class MovieRepoWithPaging() {
 
@@ -52,6 +53,18 @@ class MovieRepoWithPaging() {
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { SearchPagingSource(apiService, queryStr)}
+        ).flow
+    }
+
+    fun filterMovies(filterObj: FilterObj?): Flow<PagingData<MovieResult>>
+    {
+        Log.d("Movie Repo", "filterMovies: function called")
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { FilterPagingSource(apiService, filterObj)}
         ).flow
     }
 }

@@ -36,7 +36,7 @@ class NewMovieViewModel(): ViewModel()
     private val _searchQuery = MutableStateFlow<String?>(null) // MutableStateFlow for search query
     val searchQuery: StateFlow<String?> get() = _searchQuery
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    //@OptIn(ExperimentalCoroutinesApi::class)
     private val _moviesFlow = _searchQuery
         .flatMapLatest { query ->
             when {

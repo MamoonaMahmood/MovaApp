@@ -34,27 +34,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class FragmentAfterLogin : NavHostFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var fragmentContainerView: FragmentContainerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_after_login, container, false)
         return view
     }
@@ -63,34 +52,12 @@ class FragmentAfterLogin : NavHostFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navHostFragment = childFragmentManager.findFragmentById(R.id.fragmentContainerView2)
-        fragmentContainerView = view.findViewById<FragmentContainerView>(R.id.fragmentContainerView2)
+        fragmentContainerView = view.findViewById(R.id.fragmentContainerView2)
         val navController = fragmentContainerView.findNavController()
-
 
         bottomNavigationView = view.findViewById(R.id.bottomNavView)
         bottomNavigationView.setupWithNavController(navController)
 
 
     }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAfterLogin.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentAfterLogin().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 class MovieRepoWithPaging() {
 
     private val apiService = RetrofitBuilder.create()
+
     fun getTopRatedMovies(): Flow<PagingData<MovieResult>> {
         return Pager(
             config = PagingConfig(
@@ -67,4 +68,5 @@ class MovieRepoWithPaging() {
             pagingSourceFactory = { FilterPagingSource(apiService, filterObj)}
         ).flow
     }
+
 }

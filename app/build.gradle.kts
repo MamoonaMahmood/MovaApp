@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp.plugin)
+    //alias(libs.plugins.kapt.plugin)
+    //id("org.jetbrains.kotlin.kapt")
 
 }
 
@@ -38,7 +41,6 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        compose = true
         viewBinding = true
     }
     composeOptions {
@@ -105,5 +107,12 @@ dependencies {
     // Navigation component
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
+
+
+    implementation (libs.room.runtime)
+    ksp (libs.room.compiler)
+    implementation (libs.room.ktx)
+
+
 
 }

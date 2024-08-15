@@ -10,13 +10,10 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import java.util.logging.Handler
 
-class MainActivity : FragmentActivity() {
+class MainActivity : FragmentActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-
 
         if (savedInstanceState == null) {
             // Add SplashFragment to the container
@@ -24,31 +21,7 @@ class MainActivity : FragmentActivity() {
                 .add<SplashFragment>(R.id.fragmentContainerView)
                 .commit()
         }
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.commit {
-//                setReorderingAllowed(true)
-//                add<SplashFragment>(R.id.fragmentContainerView)
-//            }
-//        }
-//
-//        android.os.Handler().postDelayed({
-//            replaceWithLoginFragment()
-//        }, 6000)
-
-
     }
-
-//    private fun replaceWithLoginFragment() {
-//
-//        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
-//        supportFragmentManager.commit {
-//            replace<LoginFragment>(R.id.fragmentContainerView)
-//            setReorderingAllowed(true)
-//        }
-//
-//    }
 
 }
 

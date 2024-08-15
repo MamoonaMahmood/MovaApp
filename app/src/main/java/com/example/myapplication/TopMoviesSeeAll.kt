@@ -6,40 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Data.MovieResult
+import com.example.myapplication.Data.UserData
 import com.example.myapplication.Network.ApiRequestHandle
 import com.example.myapplication.Network.RetrofitBuilder
+import com.example.myapplication.ViewModel.DataBaseViewModel
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class TopMoviesSeeAll : Fragment(), OnMovieLongClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TopMoviesSeeAll.newInstance] factory method to
- * create an instance of this fragment.
- */
-class TopMoviesSeeAll : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
+    private lateinit var dbViewModel: DataBaseViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +39,11 @@ class TopMoviesSeeAll : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
 
-        topMoviePagingAdapter = MoviePagingAdapter()
+        topMoviePagingAdapter = MoviePagingAdapter(this)
         recyclerView.adapter = topMoviePagingAdapter
 
         val newMovieViewModel = NewMovieViewModel()
+        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
@@ -63,27 +52,38 @@ class TopMoviesSeeAll : Fragment() {
         }
 
 
-
         return view
     }
+    override fun onMovieLongClicked(movieResult: MovieResult) {
+        showDialogueBox(
+            onPositiveClick = {
+                val userData = UserData(
+                    id = 0 ,
+                    posterPath = movieResult.posterPath,
+                    voteAverage = movieResult.voteAverage
+                )
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TopMoviesSeeAll.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TopMoviesSeeAll().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+                dbViewModel.addUserLikes(userData)
+                Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
+            },
+            onNegativeClick = {
+                Toast.makeText(context, "Not Added to Favourites", Toast.LENGTH_SHORT).show()
+            })
+    }
+
+    private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
+    {
+        val builder =  AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmation")
+        builder.setMessage("Do you want to add this title to favorites?")
+
+        builder.setPositiveButton("Yes"){ _, _ ->
+            onPositiveClick()
+        }
+
+        builder.setNegativeButton("No"){ _,_ ->
+            onNegativeClick()
+        }
+        builder.show()
     }
 }

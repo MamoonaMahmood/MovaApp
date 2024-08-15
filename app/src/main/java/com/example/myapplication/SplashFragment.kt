@@ -40,25 +40,19 @@ SplashFragment : Fragment(R.layout.fragment_splash) {
 
         val rotateAnimator = ObjectAnimator.ofFloat(imageRotate, "rotation", 0f, 360f)
         rotateAnimator.duration = SPLASH_DURATION
-        //rotateAnimator.repeatCount = ObjectAnimator.INFINITE
+        rotateAnimator.repeatCount = ObjectAnimator.INFINITE
         rotateAnimator.repeatMode = ObjectAnimator.RESTART// Duration in milliseconds
 
         // Start the animation
         rotateAnimator.start()
 
-        // Stop the animation after 3 seconds
-//        Handler(Looper.getMainLooper()).postDelayed({
-//
-//            parentFragmentManager.beginTransaction().
-//                replace(R.id.fragmentContainerView, LoginFragment())
-//                .commit()
-//        }, 6000)
+         //Stop the animation after 3 seconds
+        Handler(Looper.getMainLooper()).postDelayed({
 
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(3000)
-            parentFragmentManager.commit {
-                replace<LoginFragment>(R.id.fragmentContainerView, "LoginScreen")
-            }
-        }
+            parentFragmentManager.beginTransaction().
+                replace(R.id.fragmentContainerView, LoginFragment())
+                .commit()
+        }, 3000)
+
     }
 }

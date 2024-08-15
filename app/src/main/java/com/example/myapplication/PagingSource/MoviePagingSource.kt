@@ -29,8 +29,8 @@ class MoviePagingSource(
             }
             LoadResult.Page(
                 data = response.results,
-                prevKey = if (pageNumber == 1 ) null else pageNumber - 1, // Only paging forward.
-                nextKey = if(response.results.isEmpty()) null else pageNumber + 1 //???????
+                prevKey = if (pageNumber == 1 ) null else pageNumber - 1,
+                nextKey = if(response.results.isEmpty()) null else pageNumber + 1
             )
         } catch (e: IOException) {
             LoadResult.Error(e)

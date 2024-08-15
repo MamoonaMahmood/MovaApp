@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.example.myapplication.exploreFragment"
+        android:name="com.example.myapplication.ExploreFragment"
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore">
         <action

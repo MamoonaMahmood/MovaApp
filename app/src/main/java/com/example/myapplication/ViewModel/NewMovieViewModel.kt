@@ -1,5 +1,6 @@
 package com.example.myapplication.ViewModel
 
+
 import com.example.myapplication.Repository.MovieRepoWithPaging
 import com.example.myapplication.Data.MovieResult
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.myapplication.Data.FilterObj
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 class NewMovieViewModel(): ViewModel()
 {
     private val newMovieRepo = MovieRepoWithPaging()
+
 
     private val _filterObj = MutableStateFlow<FilterObj?>(null)
     private val filterObj: StateFlow<FilterObj?> = _filterObj

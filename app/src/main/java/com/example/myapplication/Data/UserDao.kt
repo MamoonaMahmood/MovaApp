@@ -1,6 +1,8 @@
 package com.example.myapplication.Data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -11,7 +13,7 @@ interface UserDao {
     suspend fun addLikes(userData: UserData)
 
     @Query("SELECT * FROM user_likes ORDER BY id ASC")
-    fun readAllData(): Flow<List<UserData>>
+    fun readAllData(): PagingSource <Int,UserData>
 
 
 }

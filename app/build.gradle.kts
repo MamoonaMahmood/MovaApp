@@ -59,8 +59,6 @@ dependencies {
     implementation (libs.androidx.navigation.fragment.ktx.v230)
     implementation (libs.androidx.navigation.ui.ktx.v230)
 
-    //val paging_version = "3.3.1"
-
     implementation (libs.androidx.paging.runtime)
 
     implementation(libs.androidx.runtime.saved.instance.state)
@@ -110,8 +108,11 @@ dependencies {
 
 
     implementation (libs.room.runtime)
-    ksp (libs.room.compiler)
     implementation (libs.room.ktx)
+    implementation (libs.androidx.room.paging)
+    ksp (libs.room.compiler)
+
+
 
 
 

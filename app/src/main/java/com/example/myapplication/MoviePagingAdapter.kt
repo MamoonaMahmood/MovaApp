@@ -35,8 +35,9 @@ class MoviePagingAdapter(
         return itemCount == 0
     }
 
-    class MovieViewHolder(private val binding: IndividualMovieItemBinding,
-                          private val onMovieLongClickListener: OnMovieLongClickListener)
+    class MovieViewHolder(
+        private val binding: IndividualMovieItemBinding,
+        private val onMovieLongClickListener: OnMovieLongClickListener)
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult : MovieResult)

@@ -26,16 +26,13 @@ navigationFragmentKtx = "2.7.7"
 navigationFragmentKtxVersion = "2.3.0"
 navigationUiKtx = "2.3.0"
 okhttp = "4.9.1"
-pagingRuntime = "3.3.1"
+pagingRuntime = "3.3.2"
 retrofit = "2.9.0"
-roomCompilerVersion = "2.2.5"
-roomKtx = "2.2.5"
-roomRuntime = "2.6.1"
-roomRuntimeVersion = "2.2.5"
 runtimeSavedInstanceState = "1.0.0-alpha11"
 supportAnnotations = "28.0.0"
 ksp = "2.0.0-1.0.23"
 room = "2.6.1"
+uiDesktop = "1.6.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,13 +42,10 @@ androidx-navigation-fragment-ktx-v230 = { module = "androidx.navigation:navigati
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx-v230 = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
-androidx-room-compiler-v225 = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
-androidx-room-ktx-v225 = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
-androidx-room-runtime-v225 = { module = "androidx.room:room-runtime", version.ref = "roomRuntimeVersion" }
-androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomCompilerVersion" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 annotations = { module = "com.github.bumptech.glide:annotations", version.ref = "glide" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }

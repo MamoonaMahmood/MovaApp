@@ -6,35 +6,26 @@
     android:id="@+id/scrollViewHome"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintStart_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".HomeFragment" >
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="48dp"
-        android:id="@+id/imageConstraint">
+        tools:context=".HomeFragment" >
+
+
             <ImageView
                 android:id="@+id/mainImage"
                 android:layout_width="match_parent"
                 android:layout_height="370dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ogimage"
-                app:layout_constraintEnd_toEndOf="@id/imageConstraint"
-                app:layout_constraintStart_toStartOf="@id/imageConstraint"
-                app:layout_constraintTop_toTopOf="@id/imageConstraint" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/movaHomeLogo"
@@ -43,8 +34,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/logo"
-            app:layout_constraintStart_toStartOf="@id/imageConstraint"
-            app:layout_constraintTop_toTopOf="@id/imageConstraint"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <ImageView
@@ -54,8 +45,8 @@
             android:layout_marginEnd="24dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/notification"
-            app:layout_constraintEnd_toEndOf="@id/imageConstraint"
-            app:layout_constraintTop_toTopOf="@id/imageConstraint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
              />
 
         <ImageView
@@ -67,7 +58,7 @@
             android:layout_marginTop="48dp"
             android:background="@drawable/search"
             app:layout_constraintEnd_toStartOf="@+id/BellIcon"
-            app:layout_constraintTop_toTopOf="@id/imageConstraint"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
@@ -80,7 +71,7 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:id="@+id/doctorText"
-            app:layout_constraintStart_toStartOf="@id/imageConstraint"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movaHomeLogo" />
 
         <Button
@@ -94,7 +85,7 @@
             android:id="@+id/playButton"
             android:textAlignment="center"
             android:background="@drawable/play_button"
-            app:layout_constraintStart_toStartOf="@id/imageConstraint"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/doctorText">
 
         </Button>
@@ -114,7 +105,6 @@
 
         </Button>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/TopMoviesText"
@@ -127,7 +117,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageConstraint" />
+                app:layout_constraintTop_toBottomOf="@+id/mainImage" />
 
             <TextView
                 android:id="@+id/seeAllTopMovie"
@@ -141,7 +131,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.905"
                 app:layout_constraintStart_toEndOf="@+id/TopMoviesText"
-                app:layout_constraintTop_toBottomOf="@+id/imageConstraint" />
+                app:layout_constraintTop_toBottomOf="@+id/mainImage" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView1"

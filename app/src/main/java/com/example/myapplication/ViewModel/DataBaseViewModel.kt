@@ -14,13 +14,10 @@ import kotlinx.coroutines.launch
 
 class DataBaseViewModel(application: Application): AndroidViewModel(application)
 {
-    private var dataBaseRepo: DataBaseRepo
-
     private val repository: DataBaseRepo
 
     init {
         val userDao = UserDataBase.getDataBase(application).userDao()
-        dataBaseRepo = DataBaseRepo(userDao)
 
         repository = DataBaseRepo(userDao)
     }
@@ -30,6 +27,20 @@ class DataBaseViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addUserLike(userData)
+        }
+    }
+
+    fun deleteUserLike(userData: UserData)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteUser(userData)
+        }
+    }
+
+    fun deleteAllUsers()
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllUsers()
         }
     }
 }

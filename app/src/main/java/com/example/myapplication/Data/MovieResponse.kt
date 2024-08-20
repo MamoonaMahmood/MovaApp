@@ -11,7 +11,10 @@ data class MovieResult(
     @SerializedName("poster_path")
     val posterPath: String,
     @SerializedName("vote_average")
-    val voteAverage: Double
+    val voteAverage: Double,
+    @SerializedName("title")
+    val title: String,
+
 )
 
 data class FilterObj(

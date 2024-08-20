@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication.Data.UserDao
+import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.databinding.IndividualMovieItemBinding
 

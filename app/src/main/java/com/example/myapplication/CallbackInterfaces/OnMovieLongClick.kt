@@ -1,7 +1,6 @@
-package com.example.myapplication
+package com.example.myapplication.CallbackInterfaces
 
 import com.example.myapplication.Data.MovieResult
-import com.example.myapplication.Data.UserData
 
 interface OnMovieLongClickListener {
     fun onMovieLongClicked(movieResult: MovieResult)

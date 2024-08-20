@@ -3,12 +3,10 @@ package com.example.myapplication
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
@@ -18,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.ViewModel.DataBaseViewModel
@@ -25,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
 
-class ExploreFragment : Fragment(), OnMovieLongClickListener {
+class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener {
 
 
     private lateinit var popRecyclerView: RecyclerView
@@ -35,12 +34,8 @@ class ExploreFragment : Fragment(), OnMovieLongClickListener {
     private lateinit var searchView: SearchView
     private lateinit var dbViewModel: DataBaseViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_explore, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
@@ -76,7 +71,7 @@ class ExploreFragment : Fragment(), OnMovieLongClickListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.filterMoviesFlow.collectLatest { pagingData->
-               filterPagingAdapter.submitData(pagingData)
+                filterPagingAdapter.submitData(pagingData)
                 popRecyclerView.visibility = INVISIBLE
                 filterRecyclerView.visibility = VISIBLE
             }
@@ -96,15 +91,10 @@ class ExploreFragment : Fragment(), OnMovieLongClickListener {
                 Log.d("SearchView", "Query submitted: $newText")
                 newMovieViewModel.updateSearchQuery(newText)
                 popRecyclerView.visibility = VISIBLE
-               filterRecyclerView.visibility = INVISIBLE
+                filterRecyclerView.visibility = INVISIBLE
                 return true
             }
         })
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         filterBtn.setOnClickListener{
             val bottomSheet = BottomSheetFragment()

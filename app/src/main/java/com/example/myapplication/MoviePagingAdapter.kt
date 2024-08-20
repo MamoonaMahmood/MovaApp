@@ -8,6 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.databinding.IndividualMovieItemBinding
 
 
@@ -37,7 +38,8 @@ class MoviePagingAdapter(
 
     class MovieViewHolder(
         private val binding: IndividualMovieItemBinding,
-        private val onMovieLongClickListener: OnMovieLongClickListener)
+        private val onMovieLongClickListener: OnMovieLongClickListener
+    )
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movieResult : MovieResult)

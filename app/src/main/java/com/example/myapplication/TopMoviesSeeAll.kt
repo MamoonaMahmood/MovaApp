@@ -1,40 +1,30 @@
 package com.example.myapplication
 
-import com.example.myapplication.Repository.MovieRepoWithPaging
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.Network.ApiRequestHandle
-import com.example.myapplication.Network.RetrofitBuilder
 import com.example.myapplication.ViewModel.DataBaseViewModel
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class TopMoviesSeeAll : Fragment(), OnMovieLongClickListener {
+class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieLongClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
     private lateinit var dbViewModel: DataBaseViewModel
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_top_movies_see_all, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
@@ -50,9 +40,6 @@ class TopMoviesSeeAll : Fragment(), OnMovieLongClickListener {
                 topMoviePagingAdapter.submitData(pagingData)
             }
         }
-
-
-        return view
     }
     override fun onMovieLongClicked(movieResult: MovieResult) {
         showDialogueBox(

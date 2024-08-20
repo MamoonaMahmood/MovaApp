@@ -24,4 +24,8 @@ class DataBaseRepo(private val userDao: UserDao) {
     }
 
     suspend fun addUserLike( userData: UserData) = userDao.addLikes(userData)
+
+    suspend fun deleteUser(userData: UserData) = userDao.deleteUserLike(userData)
+
+    suspend fun deleteAllUsers() = userDao.deleteAllUserLikes()
 }

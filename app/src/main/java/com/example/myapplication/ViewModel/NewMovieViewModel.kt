@@ -8,12 +8,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.myapplication.Data.FilterObj
+import com.example.myapplication.Data.MovieResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 
 class NewMovieViewModel(): ViewModel()
@@ -23,6 +25,9 @@ class NewMovieViewModel(): ViewModel()
 
     private val _filterObj = MutableStateFlow<FilterObj?>(null)
     private val filterObj: StateFlow<FilterObj?> = _filterObj
+
+    private val _bannerMoviesFlow = MutableStateFlow<MovieResponse?>(null)
+    val bannerMoviesFlow: StateFlow<MovieResponse?> get() = _bannerMoviesFlow
 
     val popularMoviesFlow: Flow<PagingData<MovieResult>> = newMovieRepo.getPopularMovies()
         .cachedIn(viewModelScope)
@@ -67,7 +72,16 @@ class NewMovieViewModel(): ViewModel()
         _filterObj.value = newFilterObj
     }
 
+    fun fetchBannerMovies() {
+        viewModelScope.launch {
+            try {
+                val response = newMovieRepo.staticPopMovies()
+                _bannerMoviesFlow.value = response
 
-
-
+            } catch (e:Exception)
+            {
+                _bannerMoviesFlow.value = null
+            }
+        }
+    }
 }

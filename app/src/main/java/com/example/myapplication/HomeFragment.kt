@@ -2,8 +2,11 @@ package com.example.myapplication
 
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -11,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.ViewModel.DataBaseViewModel
@@ -28,12 +33,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
     private lateinit var newReleaseRecyclerView: RecyclerView
     private lateinit var seeAllTopMovies : TextView
     private lateinit var seeAllTopRelease : TextView
+    private lateinit var mainImageView: ImageView
+    private lateinit var bannerNameTextView: TextView
+
+    private var currentBannerIndex = 0
+    private val bannerChangeHandler = Handler(Looper.getMainLooper())
+    private val bannerChangeRunnable = object : Runnable {
+        override fun run() {
+            updateBanner()
+            bannerChangeHandler.postDelayed(this, 5000) // Change banner every 3 seconds
+        }
+    }
+
+    private var moviesList: List<MovieResult> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         seeAllTopMovies = view.findViewById(R.id.seeAllTopMovie)
         seeAllTopRelease = view.findViewById(R.id.seeAllNewMovie)
+        mainImageView = view.findViewById(R.id.mainImage)
+        bannerNameTextView = view.findViewById(R.id.doctorText)
 
         seeAllTopMovies.setOnClickListener{
 
@@ -57,6 +77,21 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
 
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
         val newMovieViewModel = NewMovieViewModel()
+
+        newMovieViewModel.fetchBannerMovies()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            newMovieViewModel.bannerMoviesFlow.collectLatest { response ->
+                response?.results?.let { movies ->
+                    if (movies.isNotEmpty()) {
+                        moviesList = movies
+                        currentBannerIndex = 0
+                        bannerChangeHandler.removeCallbacks(bannerChangeRunnable)
+                        bannerChangeRunnable.run() // Start the banner change runnable
+                    }
+                }
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
@@ -122,6 +157,24 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
             onNegativeClick()
         }
         builder.show()
+    }
+
+    private fun updateBanner() {
+        if (moviesList.isNotEmpty()) {
+            val movie = moviesList[currentBannerIndex]
+            Glide.with(this@HomeFragment)
+                .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+                .centerCrop()
+                .into(mainImageView)
+
+            bannerNameTextView.text = movie.title
+
+            currentBannerIndex = (currentBannerIndex + 1) % moviesList.size
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bannerChangeHandler.removeCallbacks(bannerChangeRunnable)
     }
 }
 

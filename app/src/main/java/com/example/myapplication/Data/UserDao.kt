@@ -15,5 +15,11 @@ interface UserDao {
     @Query("SELECT * FROM user_likes ORDER BY id ASC")
     fun readAllData(): PagingSource <Int,UserData>
 
+    @Delete
+    suspend fun deleteUserLike(userData: UserData)
+
+    @Query("DELETE FROM user_likes")
+    suspend fun deleteAllUserLikes()
+
 
 }

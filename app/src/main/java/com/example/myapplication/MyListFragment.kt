@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.ViewModel.DataBaseViewModel
+import com.example.myapplication.adapter.DatabasePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

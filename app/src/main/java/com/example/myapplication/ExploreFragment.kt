@@ -23,6 +23,7 @@ import com.example.myapplication.ViewModel.DataBaseViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
+import com.example.myapplication.adapter.MoviePagingAdapter
 
 class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener {
 

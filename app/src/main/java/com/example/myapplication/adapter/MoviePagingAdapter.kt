@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapter
 
 
 import com.example.myapplication.Data.MovieResult
@@ -19,12 +19,12 @@ class MoviePagingAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MoviePagingAdapter.MovieViewHolder {
+    ): MovieViewHolder {
         val binding = IndividualMovieItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieViewHolder(binding, onMovieLongClickListener)
     }
 
-    override fun onBindViewHolder(holder: MoviePagingAdapter.MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movieResult = getItem(position)
         if (movieResult != null) {
             holder.bind(movieResult)

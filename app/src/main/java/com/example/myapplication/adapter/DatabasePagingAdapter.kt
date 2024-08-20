@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,17 +12,17 @@ import com.example.myapplication.databinding.IndividualMovieItemBinding
 
 class DatabasePagingAdapter(
     private val onMovieLongClick: onMovieLongClick
-): PagingDataAdapter<UserData,DatabasePagingAdapter.DatabaseViewHolder>(DatabaseResultDiffCallBack())
+): PagingDataAdapter<UserData, DatabasePagingAdapter.DatabaseViewHolder>(DatabaseResultDiffCallBack())
 {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): DatabasePagingAdapter.DatabaseViewHolder {
+    ): DatabaseViewHolder {
         val binding = IndividualMovieItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DatabaseViewHolder(binding, onMovieLongClick )
     }
 
-    override fun onBindViewHolder(holder: DatabasePagingAdapter.DatabaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DatabaseViewHolder, position: Int) {
         val userLike = getItem(position)
         if(userLike!=null)
         {

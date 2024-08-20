@@ -14,6 +14,7 @@ import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.ViewModel.DataBaseViewModel
 import com.example.myapplication.ViewModel.NewMovieViewModel
+import com.example.myapplication.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

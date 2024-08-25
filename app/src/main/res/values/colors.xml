@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="Red">#C1232F</color>
-    <color name="default_bottom_nav">#FFFFFFFF</color>
+    <color name="default_bottom_nav">#F9F8F6</color>
     <color name="selected_bottom_nav">#FFC1232F</color>
     <color name="chip_bg_color">#FFFFCCCB</color>
 </resources>

@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollViewHome"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,8 +11,6 @@
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         tools:context=".HomeFragment" >
 
 
@@ -23,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="370dp"
                 android:src="@drawable/ogimage"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:scaleType="fitXY"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,34 +34,12 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <ImageView
-            android:id="@+id/BellIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/notification"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
-
-        <ImageView
-            android:id="@+id/searchHomeIcon"
-            android:layout_width="50dp"
-
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/search"
-            app:layout_constraintEnd_toStartOf="@+id/BellIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="172dp"
+            android:layout_marginTop="150dp"
             android:fontFamily="@font/urbanistbold"
             android:text="Dr. Strange 2"
             android:textColor="@color/white"
@@ -75,13 +49,14 @@
             app:layout_constraintTop_toBottomOf="@id/movaHomeLogo" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:text="play"
-            android:drawablePadding="2dp"
-            android:drawableStart="@drawable/play_circle_icon"
+            android:textSize="16sp"
+            android:paddingStart="15dp"
+            android:drawableLeft="@drawable/play_circle_icon"
             android:id="@+id/playButton"
             android:textAlignment="center"
             android:background="@drawable/play_button"
@@ -91,15 +66,16 @@
         </Button>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="2dp"
+            android:paddingStart="15dp"
             android:drawableLeft="@drawable/plus_icon"
             app:layout_constraintStart_toEndOf="@id/playButton"
             app:layout_constraintTop_toBottomOf="@id/doctorText"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:text="My List"
+            android:textSize="16sp"
             android:background="@drawable/my_list_button"
             >
 
@@ -109,38 +85,37 @@
             <TextView
                 android:id="@+id/TopMoviesText"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/urbanistbold"
                 android:text="@string/Top10"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mainImage" />
 
             <TextView
                 android:id="@+id/seeAllTopMovie"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/urbanistbold"
                 android:text="@string/SeeAll"
                 android:textColor="@color/Red"
                 android:textSize="16sp"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.905"
-                app:layout_constraintStart_toEndOf="@+id/TopMoviesText"
                 app:layout_constraintTop_toBottomOf="@+id/mainImage" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="8dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.262"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TopMoviesText" />
 
@@ -148,39 +123,37 @@
                 android:id="@+id/recyclerView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="8dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.285"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/NewReleasesText" />
 
             <TextView
                 android:id="@+id/NewReleasesText"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/urbanistbold"
                 android:text="@string/NewRelease"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView1" />
 
             <TextView
                 android:id="@+id/seeAllNewMovie"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/urbanistbold"
                 android:text="@string/SeeAll"
                 android:textColor="@color/Red"
                 android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.937"
-                app:layout_constraintStart_toEndOf="@+id/NewReleasesText"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView1" />
 
 

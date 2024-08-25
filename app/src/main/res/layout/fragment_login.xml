@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,116 +12,119 @@
         <ImageView
             android:id="@+id/ImageViewlogo"
             android:layout_width="120dp"
-            android:layout_height="132dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="120dp"
-            android:src="@drawable/logo" />
+            android:layout_height="120dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/Login"
-            android:textSize="32sp"
-            android:padding="8dp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/urbanistbold"
-            android:textColor="@color/black"
-            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:text="@string/Login"
             android:textAlignment="center"
-            />
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImageViewlogo" />
 
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:textSize="20sp"
-            android:padding="8dp"
-            android:drawablePadding="10dp"
-            android:backgroundTint="#C0C0C0"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:background="@drawable/rounded_edittext"
-            android:layout_margin="8dp"
-            android:inputType="textEmailAddress"
+            android:backgroundTint="#F5F5F5"
             android:drawableStart="@drawable/email_icon"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/urbanist"
-            android:hint="@string/Email" />
+            android:hint="@string/Email"
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLogin" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
-            android:backgroundTint="#C0C0C0"
-            android:layout_height="48dp"
-            android:textSize="20sp"
-            android:padding="8dp"
-            android:layout_margin="8dp"
-            android:drawablePadding="10dp"
-            android:inputType="textPassword"
-            android:hint="@string/Password"
-            android:fontFamily="@font/urbanist"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:background="@drawable/rounded_edittext"
+            android:backgroundTint="#F5F5F5"
             android:drawableStart="@drawable/password_icon"
-             />
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/urbanist"
+            android:hint="@string/Password"
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            tools:layout_editor_absoluteX="0dp" />
 
         <CheckBox
             android:id="@+id/RememberMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:textSize="20sp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/urbanistbold"
-            android:text="@string/Checkbox" />
+            android:padding="8dp"
+            android:text="@string/Checkbox"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:textSize="20sp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_edittext"
             android:backgroundTint="#C1232F"
             android:fontFamily="@font/urbanistbold"
-            android:background="@drawable/rounded_edittext"
-            android:text="@string/signIn" />
-
-        <TextView
-            android:id="@+id/editTextForgot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:padding="8dp"
-            android:layout_margin="8dp"
+            android:text="@string/signIn"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/urbanist"
-            android:text="@string/forgot" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RememberMe" />
+
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:orientation="horizontal"
             android:padding="8dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="#C1232F"
-                    >
+                    android:background="#C0C0C0">
 
                 </View>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/continueWith"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/urbanist"
-                    android:textAlignment="center"
                     android:layout_gravity="center"
-                    android:textSize="16sp">
+                    android:layout_weight="1"
+                    android:fontFamily="@font/urbanist"
+                    android:text="@string/continueWith"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    >
 
                 </TextView>
 
@@ -130,50 +133,79 @@
                     android:layout_height="1dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="#C1232F"
-                    >
+                    android:background="#C0C0C0">
                 </View>
 
         </LinearLayout>
 
-        <LinearLayout
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/facebookLogo"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    android:src="@drawable/facebook_hd"
+                    >
+
+                </ImageView>
+
+
+        <ImageView
+            android:id="@+id/googleLogo"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/facebook"
-                    android:layout_weight="1">
-                </ImageView>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:src="@drawable/google"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1">
-                </ImageView>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/apple_logo"
-                    android:layout_weight="1">
-                </ImageView>
-        </LinearLayout>
-        <TextView
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:src="@drawable/google_hd"
+            app:layout_constraintStart_toEndOf="@+id/facebookLogo"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        </ImageView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/apple_hd"
+
+            app:layout_constraintStart_toEndOf="@+id/googleLogo"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/noAccountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/urbanist"
             android:text="@string/NoAccount"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:layout_marginBottom="24dp"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/googleLogo">
 
         </TextView>
-</LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/urbanist"
+            android:layout_marginTop="48dp"
+            android:text="Sign Up"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Red"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/noAccountText"
+            app:layout_constraintTop_toBottomOf="@+id/googleLogo">
+
+        </TextView></androidx.constraintlayout.widget.ConstraintLayout>

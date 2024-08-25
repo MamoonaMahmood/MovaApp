@@ -9,14 +9,11 @@
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/search_icon_style"
-        app:layout_constraintEnd_toStartOf="@+id/imageFilterButton"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,10 +21,10 @@
 
     <ImageButton
         android:id="@+id/imageFilterButton"
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="50dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/filter_image_style"
         android:contentDescription="filter"
         android:scaleType="centerInside"
@@ -61,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageFilterButton" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <ImageView
         android:id="@+id/errorImage"
@@ -77,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageFilterButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
 
 

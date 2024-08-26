@@ -3,12 +3,17 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Transaction
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
@@ -20,18 +25,28 @@ import kotlinx.coroutines.launch
 
 class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieLongClickListener {
 
+    private lateinit var backBtn: ImageButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
     private lateinit var dbViewModel: DataBaseViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        backBtn = view.findViewById(R.id.backBtn)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
 
         topMoviePagingAdapter = MoviePagingAdapter(this)
         recyclerView.adapter = topMoviePagingAdapter
+
+        backBtn.setOnClickListener{
+            parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+            val transaction =  requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainerView2, HomeFragment())
+            transaction.commit()
+        }
 
         val newMovieViewModel = NewMovieViewModel()
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]

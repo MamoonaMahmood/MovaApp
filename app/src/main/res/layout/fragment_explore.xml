@@ -35,12 +35,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:foregroundGravity="center"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,32 +48,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filterRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:foregroundGravity="center"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
-
-    <ImageView
-        android:id="@+id/errorImage"
-        android:layout_width="match_parent"
-        android:layout_height="650dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:foregroundGravity="center"
-        android:src="@drawable/img_1"
-        android:background="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
 
 

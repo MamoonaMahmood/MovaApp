@@ -56,8 +56,8 @@ class MoviePagingAdapter(
     }
     class MovieResultDiffCallback : DiffUtil.ItemCallback<MovieResult>() {
         override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
-            // Assuming posterPath uniquely identifies the item
-            return oldItem.posterPath == newItem.posterPath
+            // Assuming title uniquely identifies the item
+            return oldItem.title == newItem.title
         }
 
         override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {

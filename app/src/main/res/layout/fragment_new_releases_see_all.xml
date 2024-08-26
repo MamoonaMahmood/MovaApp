@@ -11,9 +11,8 @@
         android:id="@+id/backBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:background="@color/white"
         android:contentDescription="backButtonforNewReleasePage"
         android:src="@drawable/back_btn_icon"
@@ -28,12 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:paddingStart="8dp"
-        android:paddingBottom="8dp"
+        android:padding="12dp"
         android:contentDescription="@string/Top10"
         android:fontFamily="@font/urbanistbold"
         android:text="@string/NewRelease"
-        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/backBtn"
@@ -41,13 +38,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="700dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:foregroundGravity="center"
-        app:flow_verticalAlign="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

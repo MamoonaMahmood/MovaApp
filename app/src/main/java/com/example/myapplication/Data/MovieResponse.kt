@@ -18,8 +18,12 @@ data class MovieResult(
 )
 
 data class FilterObj(
-    val regionString: String,
-    val sortString: String,
-    val genreString: String,
-    val timeString: String
-)
+    val regionString: String = "",
+    val sortString: String = "",
+    val genreString: String = "",
+    val timeString: String =""
+){
+    companion object {
+        fun default() = FilterObj()
+    }
+}

@@ -62,7 +62,6 @@ class MovieRepoWithPaging() {
 
     fun filterMovies(filterObj: FilterObj?): Flow<PagingData<MovieResult>>
     {
-        Log.d("Movie Repo", "filterMovies: function called")
         return Pager(
             config = PagingConfig(
                 pageSize = 10,

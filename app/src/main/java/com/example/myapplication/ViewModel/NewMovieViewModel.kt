@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -56,7 +57,8 @@ class NewMovieViewModel(): ViewModel()
 
     // Flow to fetch movies based on filter object
 
-    val filterMoviesFlow = filterObj.flatMapLatest { filter ->
+    val filterMoviesFlow = filterObj
+        .flatMapLatest { filter ->
         newMovieRepo.filterMovies(filter)
     }.cachedIn(viewModelScope)
 
@@ -69,7 +71,7 @@ class NewMovieViewModel(): ViewModel()
     //filter
     fun setFilterData(newFilterObj: FilterObj?)
     {
-        _filterObj.value = newFilterObj
+        _filterObj.value = newFilterObj ?: FilterObj.default()
     }
 
     fun fetchBannerMovies() {

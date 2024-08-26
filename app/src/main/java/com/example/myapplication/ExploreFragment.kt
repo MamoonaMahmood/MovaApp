@@ -30,7 +30,6 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
     private lateinit var popRecyclerView: RecyclerView
     private lateinit var filterRecyclerView: RecyclerView
-    private lateinit var errorImage: ImageView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
     private lateinit var dbViewModel: DataBaseViewModel
@@ -40,8 +39,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
-        errorImage = view.findViewById(R.id.errorImage)
-        errorImage.visibility = GONE
+
 
 
         popRecyclerView = view.findViewById(R.id.popRecyclerView)
@@ -63,10 +61,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         val newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
+
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.moviesFlow.collectLatest { pagingData ->
                 popMoviePagingAdapter.submitData(pagingData)
-
             }
         }
 
@@ -75,6 +73,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
                 filterPagingAdapter.submitData(pagingData)
                 popRecyclerView.visibility = INVISIBLE
                 filterRecyclerView.visibility = VISIBLE
+
             }
 
         }
@@ -84,6 +83,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
                 newMovieViewModel.updateSearchQuery(query)
                 popRecyclerView.visibility = VISIBLE
                 filterRecyclerView.visibility = INVISIBLE
+
                 searchView.clearFocus()
                 return true
             }
@@ -93,6 +93,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
                 newMovieViewModel.updateSearchQuery(newText)
                 popRecyclerView.visibility = VISIBLE
                 filterRecyclerView.visibility = INVISIBLE
+
                 return true
             }
         })

@@ -2,10 +2,12 @@ package com.example.myapplication.Data
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
-@Database(entities = [UserData::class], version = 1, exportSchema = false)
+@Database(entities = [UserData::class], version = 1)
 abstract class UserDataBase :RoomDatabase()
 {
     abstract fun userDao():UserDao
@@ -32,4 +34,23 @@ abstract class UserDataBase :RoomDatabase()
             }
         }
     }
+}
+val MIGRATION_1_2 = object : Migration(1,2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("""CREATE TABLE user_likes_new(
+            title TEXT PRIMARY KEY,
+            posterPath TEXT,
+            voteAverage REAL
+            )""")
+
+        db.execSQL("""
+            INSERT INTO user_likes_new(title, posterPath, voteAverage)
+            SELECT title, posterPath, voteAverage FROM user_likes
+        """)
+
+        db.execSQL("DROP TABLE user_likes")
+
+        db.execSQL("ALTER TABLE user_likes_new RENAME TO user_likes")
+    }
+    
 }

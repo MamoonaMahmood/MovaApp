@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".BottomSheetFragment">
 
     <TextView
         android:id="@+id/TitleText"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginTop="8dp"
         android:text="Sort and Filter"
         android:textAlignment="center"
         android:fontFamily="@font/urbanistbold"
@@ -27,258 +28,327 @@
         android:layout_marginTop="16dp"
         android:background="#C0C0C0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleText" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/categoriesGroup"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollViewBottomSheet"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:singleSelection="true"
+        app:layout_constraintTop_toBottomOf="@id/viewTop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCategories">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/view2">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip1"
-            android:layout_width="wrap_content"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            android:checkable="true"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:text="Movie" />
+            app:layout_constraintTop_toBottomOf="@id/viewTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/view2">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="TV Shows" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/categoriesGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:singleSelection="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCategories">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="K-Drama" />
-    </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    android:checkable="true"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:text="Movie" />
 
-    <TextView
-        android:id="@+id/textViewCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/urbanistbold"
-        android:text="Categories"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewTop" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="TV Shows" />
 
-    <TextView
-        android:id="@+id/textViewRegions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Regions"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:fontFamily="@font/urbanistbold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoriesGroup" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="K-Drama" />
+            </com.google.android.material.chip.ChipGroup>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupRegions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:singleSelection="true"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRegions">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            android:tag=" "
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="All Regions" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            android:tag="US"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="US" />
+            <TextView
+                android:id="@+id/textViewCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/urbanistbold"
+                android:text="Categories"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="KR"
-            android:checkable="true"
-            android:text="South Korea" />
+            <TextView
+                android:id="@+id/textViewRegions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Regions"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categoriesGroup" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="CN"
-            android:checkable="true"
-            android:text="China" />
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupRegions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:singleSelection="true"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRegions">
 
-    <TextView
-        android:id="@+id/textViewGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Genre"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:fontFamily="@font/urbanistbold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupRegions" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    android:tag=" "
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="All Regions" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGenre">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    android:tag="US"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="US" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="28"
-            android:checkable="true"
-            android:text="Action" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="KR"
+                    android:checkable="true"
+                    android:text="South Korea" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            android:tag="35"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="Comedy" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="CN"
+                    android:checkable="true"
+                    android:text="China" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            android:tag="10749"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:checkable="true"
-            android:text="Romance" />
-    </com.google.android.material.chip.ChipGroup>
+            <TextView
+                android:id="@+id/textViewGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Genre"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupRegions" />
 
-    <TextView
-        android:id="@+id/textViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Time/Periods"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:fontFamily="@font/urbanistbold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupGenre" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewGenre">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTime">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="28"
+                    android:checkable="true"
+                    android:text="Action" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag=" "
-            android:checkable="true"
-            android:text="All Periods" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    android:tag="35"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="Comedy" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="2022"
-            android:checkable="true"
-            android:text="2022" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    android:tag="10749"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:checkable="true"
+                    android:text="Romance" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="2021"
-            android:checkable="true"
-            android:text="2021" />
+            <TextView
+                android:id="@+id/textViewTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Time/Periods"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupGenre" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CustomChipStyle"
-            app:chipStrokeColor="@color/Red"
-            app:chipStrokeWidth="1dp"
-            android:tag="2020"
-            android:checkable="true"
-            android:text="2020" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTime">
 
-    </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag=" "
+                    android:checkable="true"
+                    android:text="All Periods" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="2022"
+                    android:checkable="true"
+                    android:text="2022" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="2021"
+                    android:checkable="true"
+                    android:text="2021" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChipStyle"
+                    app:chipStrokeColor="@color/Red"
+                    app:chipStrokeWidth="1dp"
+                    android:tag="2020"
+                    android:checkable="true"
+                    android:text="2020" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:singleSelection="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSort">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip15"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="popularity"
+                    android:tag="popularity.asc"
+                    app:chipStrokeColor="@color/Red"
+                    android:checkable="true"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip16"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Latest Release"
+                    android:tag="primary_release_date.desc"
+                    app:chipStrokeColor="@color/Red"
+                    android:checkable="true"
+                    app:chipStrokeWidth="1dp" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textViewSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Sort"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupTime" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
     <View
         android:id="@+id/view2"
         android:layout_width="370dp"
@@ -288,80 +358,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupSort" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewBottomSheet" />
+
+
 
     <Button
         android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="16dp"
         style="@style/buttonStyle"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
         android:background="@drawable/rounded_edittext"
         android:text="Reset"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonApply"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <Button
         android:id="@+id/buttonApply"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="48dp"
+        app:layout_constraintStart_toEndOf="@id/buttonReset"
         style="@style/buttonStyle"
         android:background="@drawable/rounded_edittext"
         android:text="Apply"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.187" />
+        />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupSort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:singleSelection="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSort">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip15"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="popularity"
-            android:tag="popularity.asc"
-            app:chipStrokeColor="@color/Red"
-            android:checkable="true"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip16"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Latest Release"
-            android:tag="primary_release_date.desc"
-            app:chipStrokeColor="@color/Red"
-            android:checkable="true"
-            app:chipStrokeWidth="1dp" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <TextView
-        android:id="@+id/textViewSort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Sort"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:fontFamily="@font/urbanistbold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupTime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

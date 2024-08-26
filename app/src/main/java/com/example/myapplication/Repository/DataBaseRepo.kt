@@ -1,6 +1,5 @@
 package com.example.myapplication.Repository
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -28,4 +27,6 @@ class DataBaseRepo(private val userDao: UserDao) {
     suspend fun deleteUser(userData: UserData) = userDao.deleteUserLike(userData)
 
     suspend fun deleteAllUsers() = userDao.deleteAllUserLikes()
+
+    suspend fun checkIfTableisEmpty() = userDao.checkisEmpty()
 }

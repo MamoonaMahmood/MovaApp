@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.databinding.IndividualMovieItemBinding
+import com.example.myapplication.databinding.IndividualMovieItemDbBinding
 
 class DatabasePagingAdapter(
     private val onMovieLongClick: onMovieLongClick
@@ -18,7 +19,7 @@ class DatabasePagingAdapter(
         parent: ViewGroup,
         viewType: Int
     ): DatabaseViewHolder {
-        val binding = IndividualMovieItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = IndividualMovieItemDbBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DatabaseViewHolder(binding, onMovieLongClick )
     }
 
@@ -32,7 +33,7 @@ class DatabasePagingAdapter(
     }
 
     class DatabaseViewHolder(
-        private val binding: IndividualMovieItemBinding,
+        private val binding: IndividualMovieItemDbBinding,
         private val onMovieLongClick: onMovieLongClick
     ): RecyclerView.ViewHolder(binding.root)
     {
@@ -44,9 +45,8 @@ class DatabasePagingAdapter(
 
             binding.ratingItem.text = userData.voteAverage.toString()
 
-            itemView.setOnLongClickListener{
+            binding.DeleteButtonItem.setOnClickListener{
                 onMovieLongClick.onMovieLongClicked(userData)
-                true
             }
         }
     }

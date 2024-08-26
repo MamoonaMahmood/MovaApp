@@ -1,10 +1,7 @@
 package com.example.myapplication.Data
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -20,6 +17,15 @@ interface UserDao {
 
     @Query("DELETE FROM user_likes")
     suspend fun deleteAllUserLikes()
+
+    @Query("SELECT COUNT (*) FROM user_likes")
+    suspend fun getCount(): Int
+
+
+    suspend fun checkisEmpty(): Boolean
+    {
+        return getCount()==0
+    }
 
 
 }

@@ -3,6 +3,8 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -37,6 +39,20 @@ class MyListFragment : Fragment(R.layout.fragment_my_list), onMovieLongClick {
         recyclerView.adapter = adapter
 
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
+        //recyclerView.visibility = VISIBLE
+
+        lifecycleScope.launch {
+            dbViewModel.isTableEmpty.collect { isEmpty ->
+                if(isEmpty){
+                    imageView.visibility = VISIBLE
+                    recyclerView.visibility = INVISIBLE
+                }
+                else {
+                    imageView.visibility = INVISIBLE
+                    recyclerView.visibility = VISIBLE
+                }
+            }
+        }
 
         lifecycleScope.launch {
             dbViewModel.readAllDataFlow.collectLatest {  pagingData ->

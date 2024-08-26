@@ -14,6 +14,8 @@ class MainActivity : FragmentActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
 
         if (savedInstanceState == null) {
             // Add SplashFragment to the container

@@ -10,11 +10,15 @@ import com.example.myapplication.Data.UserDataBase
 import com.example.myapplication.Repository.DataBaseRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class DataBaseViewModel(application: Application): AndroidViewModel(application)
 {
     private val repository: DataBaseRepo
+
+    private val _isTableEmpty =  MutableStateFlow<Boolean>(false)
+    val isTableEmpty = _isTableEmpty
 
     init {
         val userDao = UserDataBase.getDataBase(application).userDao()
@@ -41,6 +45,14 @@ class DataBaseViewModel(application: Application): AndroidViewModel(application)
     {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllUsers()
+        }
+    }
+
+    fun checkTableEmpty()
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.checkIfTableisEmpty()
+            _isTableEmpty.value = result
         }
     }
 }

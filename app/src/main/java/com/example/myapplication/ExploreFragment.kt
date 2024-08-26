@@ -40,6 +40,12 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
 
+        searchView.setOnClickListener(object : View.OnClickListener
+        {
+            override fun onClick(view: View?) {
+                searchView.isIconified = false
+            }
+        })
 
 
         popRecyclerView = view.findViewById(R.id.popRecyclerView)

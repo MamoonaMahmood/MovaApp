@@ -11,3 +11,4 @@ data class UserData(
     val posterPath: String,
     val voteAverage: Double
 )
+

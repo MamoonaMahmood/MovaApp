@@ -17,16 +17,18 @@
             <ImageView
                 android:id="@+id/mainImage"
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="0dp"
                 android:src="@drawable/ogimage"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/movaHomeLogo"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:paddingStart="8dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/logo"
@@ -39,7 +41,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="270dp"
             android:fontFamily="@font/urbanistbold"
             android:text="Dr. Strange 2"
             android:textColor="@color/white"

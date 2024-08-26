@@ -48,9 +48,8 @@ class MoviePagingAdapter(
                 .load("https://image.tmdb.org/t/p/w500${movieResult.posterPath}")
                 .into(binding.movieItem)
             binding.ratingItem.text = movieResult.voteAverage.toString()
-            itemView.setOnLongClickListener {
+            binding.addButtonItem.setOnClickListener {
                 onMovieLongClickListener.onMovieLongClicked(movieResult)
-                true
             }
         }
     }

@@ -36,6 +36,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
     private lateinit var seeAllTopRelease : TextView
     private lateinit var mainImageView: ImageView
     private lateinit var bannerNameTextView: TextView
+    private lateinit var newMovieViewModel: NewMovieViewModel
 
     private var currentBannerIndex = 0
     private val bannerChangeHandler = Handler(Looper.getMainLooper())
@@ -77,7 +78,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
         initializeRecyclerView(view)
 
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
-        val newMovieViewModel = NewMovieViewModel()
+        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
 
         newMovieViewModel.fetchBannerMovies()
 

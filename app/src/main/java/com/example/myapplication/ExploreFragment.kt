@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
+import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
 import com.example.myapplication.ViewModel.DataBaseViewModel
@@ -24,8 +25,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import com.example.myapplication.adapter.MoviePagingAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
-class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener {
+
+class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener, BottomSheetFragment.FilterCallback{
 
 
     private lateinit var popRecyclerView: RecyclerView
@@ -33,6 +39,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
     private lateinit var dbViewModel: DataBaseViewModel
+    private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,13 +47,21 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
 
+        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
+        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
+
+
         searchView.setOnClickListener(object : View.OnClickListener
         {
             override fun onClick(view: View?) {
                 searchView.isIconified = false
             }
-        })
 
+        })
+        searchView.setOnSearchClickListener {
+            popRecyclerView.visibility = VISIBLE
+            filterRecyclerView.visibility = INVISIBLE
+        }
 
         popRecyclerView = view.findViewById(R.id.popRecyclerView)
         filterRecyclerView = view.findViewById(R.id.filterRecyclerView)
@@ -64,9 +79,13 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         popRecyclerView.adapter = popMoviePagingAdapter
 
 
-        val newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
+        filterRecyclerView.visibility = VISIBLE
+        popRecyclerView.visibility = INVISIBLE
 
+        searchView.setOnSearchClickListener{
+            filterRecyclerView.visibility = INVISIBLE
+            popRecyclerView.visibility = VISIBLE
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.moviesFlow.collectLatest { pagingData ->
@@ -77,35 +96,45 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.filterMoviesFlow.collectLatest { pagingData->
                 filterPagingAdapter.submitData(pagingData)
-                popRecyclerView.visibility = INVISIBLE
                 filterRecyclerView.visibility = VISIBLE
+                popRecyclerView.visibility = INVISIBLE
 
             }
 
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            private var debounceJob = Job()
+            private val coroutineScope = CoroutineScope(Dispatchers.Main + debounceJob)
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.d("SearchView", "Query submitted: $query")
-                newMovieViewModel.updateSearchQuery(query)
-                popRecyclerView.visibility = VISIBLE
-                filterRecyclerView.visibility = INVISIBLE
-
+                updateSearchQuery(query)
                 searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                Log.d("SearchView", "Query submitted: $newText")
-                newMovieViewModel.updateSearchQuery(newText)
-                popRecyclerView.visibility = VISIBLE
-                filterRecyclerView.visibility = INVISIBLE
 
+
+                coroutineScope.launch {
+                    debounceJob.cancel()
+                    debounceJob = Job()
+                    delay(300)  // Debounce delay
+                    updateSearchQuery(newText)
+                }
+
+//                updateSearchQuery(newText)
                 return true
+            }
+            private fun updateSearchQuery(query: String) {
+                newMovieViewModel.updateSearchQuery(query)
+                filterRecyclerView.visibility = INVISIBLE
+                popRecyclerView.visibility = VISIBLE
             }
         })
 
         filterBtn.setOnClickListener{
             val bottomSheet = BottomSheetFragment()
+            bottomSheet.setFilterCallback(this)
             bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
 
         }
@@ -143,4 +172,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         }
         builder.show()
     }
+
+    override fun onFilterApplied(filterObj: FilterObj) {
+        newMovieViewModel.setFilterData(filterObj)
+    }
+
 }

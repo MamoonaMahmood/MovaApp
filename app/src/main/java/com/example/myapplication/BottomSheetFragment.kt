@@ -16,6 +16,8 @@ import com.google.android.material.chip.ChipGroup
 import com.example.myapplication.ViewModel.NewMovieViewModel
 
 
+
+
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
 
@@ -24,8 +26,19 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var chipGroupTime: ChipGroup
     private lateinit var chipGroupSort: ChipGroup
     private lateinit var chipGroupCategory: ChipGroup
+    private lateinit var movieViewModel: NewMovieViewModel
     private lateinit var resetBtn: Button
     private lateinit var applyBtn: Button
+
+    interface FilterCallback {
+        fun onFilterApplied(filterObj: FilterObj)
+    }
+
+    private var filterCallback: FilterCallback? = null
+
+    fun setFilterCallback(callback: FilterCallback) {
+        filterCallback = callback
+    }
 
 
 
@@ -57,9 +70,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         }
 
-        chipGroupCategory.setOnCheckedChangeListener{ chipGroupCategory, checkedId ->
-            Toast.makeText(context, "leave me alone", Toast.LENGTH_SHORT).show()
-        }
 
         chipGroupGenre.setOnCheckedChangeListener{ chipGroupGenre, checkedId ->
             handleChipSelection(chipGroupGenre, checkedId, "Genre")
@@ -85,9 +95,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 getChipText(chipGroupGenre),
                 getChipText(chipGroupTime)
             )
-            val movieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-            movieViewModel.setFilterData(filterObj)
-            Log.d("BottomSheet", "onViewCreated: Filter Object created")
+            filterCallback?.onFilterApplied(filterObj)
             dismiss()
         }
 

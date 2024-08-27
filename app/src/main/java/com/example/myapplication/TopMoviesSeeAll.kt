@@ -29,6 +29,7 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
     private lateinit var dbViewModel: DataBaseViewModel
+    private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +49,7 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
             transaction.commit()
         }
 
-        val newMovieViewModel = NewMovieViewModel()
+        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {

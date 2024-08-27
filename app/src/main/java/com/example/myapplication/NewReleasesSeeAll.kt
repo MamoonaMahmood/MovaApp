@@ -27,6 +27,7 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
     private lateinit var recyclerView : RecyclerView
     private lateinit var newReleaseAdapter: MoviePagingAdapter
     private lateinit var dbViewModel: DataBaseViewModel
+    private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +49,7 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
             transaction.commit()
         }
 
-        val newMovieViewModel = NewMovieViewModel()
+        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
         dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {

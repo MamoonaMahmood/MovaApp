@@ -45,7 +45,7 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
             parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
             val transaction =  requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView2, HomeFragment())
+            transaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
             transaction.commit()
         }
 

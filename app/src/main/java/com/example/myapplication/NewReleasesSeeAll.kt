@@ -45,7 +45,7 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView2, HomeFragment())
+            transaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
             transaction.commit()
         }
 

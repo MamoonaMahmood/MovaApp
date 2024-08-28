@@ -35,7 +35,6 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
 
     private lateinit var popRecyclerView: RecyclerView
-    private lateinit var filterRecyclerView: RecyclerView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
     private lateinit var dbViewModel: DataBaseViewModel
@@ -58,34 +57,16 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
             }
 
         })
-        searchView.setOnSearchClickListener {
-            popRecyclerView.visibility = VISIBLE
-            filterRecyclerView.visibility = INVISIBLE
-        }
+
 
         popRecyclerView = view.findViewById(R.id.popRecyclerView)
-        filterRecyclerView = view.findViewById(R.id.filterRecyclerView)
-
-        filterRecyclerView.layoutManager = GridLayoutManager(context, 2)
         popRecyclerView.layoutManager = GridLayoutManager(context, 2)
-
-        filterRecyclerView.hasFixedSize()
         popRecyclerView.hasFixedSize()
 
-
-        val filterPagingAdapter = MoviePagingAdapter(this)
-        filterRecyclerView.adapter = filterPagingAdapter
         val popMoviePagingAdapter = MoviePagingAdapter(this)
         popRecyclerView.adapter = popMoviePagingAdapter
 
 
-        filterRecyclerView.visibility = VISIBLE
-        popRecyclerView.visibility = INVISIBLE
-
-        searchView.setOnSearchClickListener{
-            filterRecyclerView.visibility = INVISIBLE
-            popRecyclerView.visibility = VISIBLE
-        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.moviesFlow.collectLatest { pagingData ->
@@ -93,42 +74,18 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            newMovieViewModel.filterMoviesFlow.collectLatest { pagingData->
-                filterPagingAdapter.submitData(pagingData)
-                filterRecyclerView.visibility = VISIBLE
-                popRecyclerView.visibility = INVISIBLE
-
-            }
-
-        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            private var debounceJob = Job()
-            private val coroutineScope = CoroutineScope(Dispatchers.Main + debounceJob)
+
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.d("SearchView", "Query submitted: $query")
-                updateSearchQuery(query)
+                newMovieViewModel.updateSearchQuery(query)
                 searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-
-
-                coroutineScope.launch {
-                    debounceJob.cancel()
-                    debounceJob = Job()
-                    delay(300)  // Debounce delay
-                    updateSearchQuery(newText)
-                }
-
-//                updateSearchQuery(newText)
+                newMovieViewModel.updateSearchQuery(newText)
                 return true
-            }
-            private fun updateSearchQuery(query: String) {
-                newMovieViewModel.updateSearchQuery(query)
-                filterRecyclerView.visibility = INVISIBLE
-                popRecyclerView.visibility = VISIBLE
             }
         })
 

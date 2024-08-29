@@ -10,6 +10,7 @@ import android.os.Handler
 import android.view.DisplayShape
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -38,21 +39,18 @@ SplashFragment : Fragment(R.layout.fragment_splash) {
 
         imageRotate = view.findViewById(R.id.imageView2)
 
-        val rotateAnimator = ObjectAnimator.ofFloat(imageRotate, "rotation", 0f, 360f)
-        rotateAnimator.duration = SPLASH_DURATION
-        rotateAnimator.repeatCount = ObjectAnimator.INFINITE
-        rotateAnimator.repeatMode = ObjectAnimator.RESTART// Duration in milliseconds
 
-        // Start the animation
-        rotateAnimator.start()
+        ObjectAnimator.ofFloat(imageRotate, "rotation", 0f, 360f).apply {
+            duration = SPLASH_DURATION
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.RESTART
+        }.start()
 
-         //Stop the animation after 3 seconds
-        Handler(Looper.getMainLooper()).postDelayed({
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(3000)
             parentFragmentManager.beginTransaction().
-                replace(R.id.fragmentContainerView, LoginFragment())
-                .commit()
-        }, 3000)
+            replace(R.id.fragmentContainerView, LoginFragment()).commit()
 
+        }
     }
 }

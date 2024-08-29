@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".BottomSheetFragment">
 
     <TextView
         android:id="@+id/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="8dp"
         android:layout_marginTop="8dp"
         android:text="Sort and Filter"
         android:textAlignment="center"
@@ -19,8 +25,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/scrollViewBottomSheet"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/viewTop"
@@ -31,23 +36,8 @@
         android:layout_marginEnd="8dp"
         android:background="#C0C0C0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleText"
-        app:layout_constraintBottom_toTopOf="@id/scrollViewBottomSheet"/>
+        app:layout_constraintTop_toBottomOf="@+id/TitleText" />
 
-    <ScrollView
-        android:id="@+id/scrollViewBottomSheet"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintTop_toBottomOf="@id/viewTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/view2">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/categoriesGroup"
@@ -56,7 +46,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:singleSelection="true"
-                app:selectionRequired="true"
                 android:checked="true"
                 app:singleLine="true"
                 app:chipSpacing="8dp"
@@ -68,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CustomChipStyle"
+                    android:checked="true"
                     android:checkable="true"
                     app:chipStrokeColor="@color/Red"
                     app:chipStrokeWidth="1dp"
@@ -106,8 +96,9 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
+
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/viewTop" />
 
             <TextView
                 android:id="@+id/textViewRegions"
@@ -129,7 +120,6 @@
                 android:layout_marginStart="16dp"
                 app:singleSelection="true"
                 android:checked="true"
-                app:selectionRequired="true"
                 android:layout_marginTop="8dp"
                 app:singleLine="true"
                 app:chipSpacing="8dp"
@@ -141,6 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CustomChipStyle"
+                    android:checked="true"
                     android:tag=" "
                     app:chipStrokeColor="@color/Red"
                     app:chipStrokeWidth="1dp"
@@ -199,7 +190,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:singleSelection="true"
-                app:selectionRequired="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:chipSpacing="8dp"
@@ -260,7 +250,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:singleSelection="true"
-                app:selectionRequired="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:chipSpacing="8dp"
@@ -276,6 +265,7 @@
                     style="@style/CustomChipStyle"
                     app:chipStrokeColor="@color/Red"
                     app:chipStrokeWidth="1dp"
+                    android:checked="true"
                     android:tag=" "
                     android:checkable="true"
                     android:text="All Periods" />
@@ -324,7 +314,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:singleSelection="true"
-                app:selectionRequired="true"
                 app:singleLine="true"
                 app:chipSpacing="8dp"
                 android:checked="true"
@@ -366,8 +355,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroupTime" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
@@ -377,41 +366,45 @@
         android:layout_marginEnd="8dp"
         android:background="#C0C0C0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollViewBottomSheet" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupSort" />
 
     <Button
         android:id="@+id/buttonReset"
-        android:background="@drawable/rounded_edittext"
-        android:textColor="@color/Red"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edittext"
         android:text="Reset"
+        android:textColor="@color/Red"
         app:layout_constraintEnd_toStartOf="@+id/buttonApply"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <Button
-        android:id="@+id/buttonApply"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:background="@drawable/rounded_edittext"
-        android:textColor="@color/Red"
-        app:layout_constraintStart_toEndOf="@id/buttonReset"
-        style="@style/buttonStyle"
-        android:text="Apply"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        />
+                android:id="@+id/buttonApply"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="48dp"
+                android:background="@drawable/rounded_edittext"
+                android:textColor="@color/Red"
+                app:layout_constraintStart_toEndOf="@id/buttonReset"
+                style="@style/buttonStyle"
+                android:text="Apply"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

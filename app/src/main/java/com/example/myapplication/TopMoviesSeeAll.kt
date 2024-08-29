@@ -8,7 +8,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,7 +19,6 @@ import androidx.room.Transaction
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import com.example.myapplication.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +29,6 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
     private lateinit var backBtn: ImageButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
-    private lateinit var dbViewModel: DataBaseViewModel
     private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,14 +43,9 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
 
         backBtn.setOnClickListener{
             parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
-            val transaction =  requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
-            transaction.commit()
         }
 
         newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
@@ -67,7 +62,7 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
                     voteAverage = movieResult.voteAverage
                 )
 
-                dbViewModel.addUserLikes(userData)
+                newMovieViewModel.addUserLikes(userData)
                 Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
             },
             onNegativeClick = {
@@ -77,7 +72,7 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
 
     private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
     {
-        val builder =  AlertDialog.Builder(requireContext())
+        val builder =  AlertDialog.Builder(requireContext(),R.style.AlertDialogTheme)
         builder.setTitle("Confirmation")
         builder.setMessage("Do you want to add this title to favorites?")
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
@@ -20,7 +21,6 @@ import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
@@ -37,7 +37,6 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
     private lateinit var popRecyclerView: RecyclerView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
-    private lateinit var dbViewModel: DataBaseViewModel
     private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,9 +44,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
+        showSoftKeyboard(searchView)
 
         newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
 
         searchView.setOnClickListener(object : View.OnClickListener
@@ -65,7 +64,6 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
         val popMoviePagingAdapter = MoviePagingAdapter(this)
         popRecyclerView.adapter = popMoviePagingAdapter
-
 
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -89,11 +87,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
             }
         })
 
+        val bottomSheet = BottomSheetFragment()
         filterBtn.setOnClickListener{
-            val bottomSheet = BottomSheetFragment()
             bottomSheet.setFilterCallback(this)
-            bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
-
+            bottomSheet.show(childFragmentManager,BottomSheetFragment.TAG)
         }
     }
 
@@ -106,7 +103,7 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
                     voteAverage = movieResult.voteAverage
                 )
 
-                dbViewModel.addUserLikes(userData)
+                newMovieViewModel.addUserLikes(userData)
                 Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
             },
             onNegativeClick = {
@@ -132,6 +129,15 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
     override fun onFilterApplied(filterObj: FilterObj) {
         newMovieViewModel.setFilterData(filterObj)
+    }
+
+    private fun showSoftKeyboard(searchView: SearchView)
+    {
+        if(searchView.requestFocus()){
+            val imm = requireContext().getSystemService(InputMethodManager::class.java)
+            imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+
+        }
     }
 
 }

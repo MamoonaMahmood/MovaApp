@@ -5,15 +5,23 @@ import com.example.myapplication.Repository.MovieRepoWithPaging
 import com.example.myapplication.Data.MovieResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.room.util.query
 import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResponse
+import com.example.myapplication.Data.UserDao
+import com.example.myapplication.Data.UserData
+import com.example.myapplication.MyMovaApp
+import com.example.myapplication.Repository.DataBaseRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -25,9 +33,36 @@ class NewMovieViewModel(): ViewModel()
 {
     //declarations
     private val newMovieRepo = MovieRepoWithPaging()
+    private val userDao: UserDao = MyMovaApp.getUserDao()
+    private val repository = DataBaseRepo(userDao)
+
+
+    val readAllDataFlow: Flow<PagingData<UserData>> = repository.readPagedData().cachedIn(viewModelScope)
+
+    fun addUserLikes(userData: UserData)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addUserLike(userData)
+        }
+    }
+
+    fun deleteUserLike(userData: UserData)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteUser(userData)
+        }
+    }
+
+    fun deleteAllUsers()
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllUsers()
+        }
+    }
+
 
     private val _searchQuery = MutableStateFlow<String?>(null) // Search query
-    val searchQuery: StateFlow<String?> get() = _searchQuery
+    val searchQuery: StateFlow<String?> = _searchQuery.asStateFlow()
 
     private val _filterObj = MutableStateFlow<FilterObj?>(null)
     private val filterObj: StateFlow<FilterObj?> get() = _filterObj
@@ -112,4 +147,7 @@ class NewMovieViewModel(): ViewModel()
         Search,
         Filter
     }
+
+
+
 }

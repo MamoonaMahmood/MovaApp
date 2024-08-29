@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import com.example.myapplication.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -26,7 +25,6 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
     private lateinit var backBtn: ImageButton
     private lateinit var recyclerView : RecyclerView
     private lateinit var newReleaseAdapter: MoviePagingAdapter
-    private lateinit var dbViewModel: DataBaseViewModel
     private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,14 +41,9 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
 
         backBtn.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView, FragmentAfterLogin())
-            transaction.commit()
         }
 
         newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.upComingMovies.collectLatest { pagingData ->
@@ -67,7 +60,7 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
                 voteAverage = movieResult.voteAverage
             )
 
-            dbViewModel.addUserLikes(userData)
+            newMovieViewModel.addUserLikes(userData)
             Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
         },
         onNegativeClick = {
@@ -77,7 +70,7 @@ class NewReleasesSeeAll : Fragment(R.layout.fragment_new_releases_see_all),
 
     private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
     {
-        val builder =  AlertDialog.Builder(requireContext())
+        val builder =  AlertDialog.Builder(requireContext(),R.style.AlertDialogTheme)
         builder.setTitle("Confirmation")
         builder.setMessage("Do you want to add this title to favorites?")
 

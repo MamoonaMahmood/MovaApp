@@ -13,7 +13,7 @@
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".HomeFragment" >
+        tools:context=".home.HomeFragment" >
 
 
             <ImageView
@@ -60,9 +60,11 @@
             android:text="play"
             android:textSize="16sp"
             android:paddingStart="15dp"
+            android:textColor="@color/white"
             android:drawableLeft="@drawable/play_circle_icon"
             android:id="@+id/playButton"
             android:textAlignment="center"
+            android:drawableTint="@color/white"
             android:background="@drawable/play_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/doctorText">
@@ -70,6 +72,7 @@
         </Button>
 
         <Button
+            android:id="@+id/myListButton"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -79,6 +82,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:text="My List"
+            android:drawableTint="@color/white"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:background="@drawable/my_list_button"
             >

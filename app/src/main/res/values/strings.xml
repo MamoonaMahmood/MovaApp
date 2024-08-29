@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Mova App</string>
     <string name="Login">Login to your account</string>
     <string name="Email">Email</string>
     <string name="Password">Password</string>

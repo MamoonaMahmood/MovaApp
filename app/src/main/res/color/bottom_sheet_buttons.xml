@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/Red" android:state_checked="true">
+<!--    <item android:color="@color/Red" android:state_pressed="true">-->
 
-    </item>
-    <item android:color="#ffcccb" android:state_checked="false">
+<!--    </item>-->
+    <item android:drawable="@drawable/rounded_edittext" android:color="@color/white" android:state_pressed="false"/>
 
-    </item>
+    <item android:drawable="@drawable/rounded_edittext" android:state_pressed="true" android:color="@color/white" />
 </selector>

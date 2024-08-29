@@ -15,7 +15,7 @@
         </style>
 
         <style name="buttonStyle" parent="Widget.AppCompat.Button">
-            <item name="android:background">@color/bottom_sheet_buttons</item>
-            <item name="android:textColor">@color/chip_text_style</item>
+            <item name="android:background">@drawable/rounded_edittext</item>
+            <item name="android:textColor">@color/bottom_sheet_text_for_buttons</item>
         </style>
 </resources>

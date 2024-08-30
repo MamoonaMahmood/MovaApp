@@ -38,6 +38,7 @@ class NewMovieViewModel(): ViewModel()
 
 
     val readAllDataFlow: Flow<PagingData<UserData>> = repository.readPagedData().cachedIn(viewModelScope)
+//    val readAllDataFlowNew: Flow<PagingData<UserLikes>> = repository.readPagedDataNew().cachedIn(viewModelScope)
 
     fun addUserLikes(userData: UserData)
     {
@@ -52,6 +53,27 @@ class NewMovieViewModel(): ViewModel()
             repository.deleteUser(userData)
         }
     }
+
+//    fun deleteAllUsers()
+//    {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.deleteAllUsers()
+//        }
+//    }
+//
+//    fun addUserLikesNew(userData: UserLikes)
+//    {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.addUserLikeNew(userData)
+//        }
+//    }
+
+//    fun deleteUserLikeNew(userData: UserLikes)
+//    {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.deleteUserNew(userData)
+//        }
+//    }
 
     fun deleteAllUsers()
     {

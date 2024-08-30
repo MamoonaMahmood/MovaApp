@@ -71,7 +71,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
 
         seeAllTopMovies.setOnClickListener{
 
-            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
             nextTransaction.replace(R.id.fragmentContainerView, TopMoviesSeeAll())
                 .addToBackStack(null)
                 .commit()
@@ -79,7 +79,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
 
         seeAllTopRelease.setOnClickListener{
 
-            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            val nextTransaction = requireActivity().supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
             nextTransaction.replace(R.id.fragmentContainerView, NewReleasesSeeAll())
                 .addToBackStack(null)
                 .commit()

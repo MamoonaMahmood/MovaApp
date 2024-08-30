@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
-@Database(entities = [UserData::class], version = 1, exportSchema = false)
+@Database(entities = [UserData::class], version = 2, exportSchema = false)
 abstract class UserDataBase :RoomDatabase()
 {
     abstract fun userDao():UserDao
@@ -38,7 +38,7 @@ abstract class UserDataBase :RoomDatabase()
 val MIGRATION_1_2 = object : Migration(1,2) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("""CREATE TABLE user_likes_new(
-            title TEXT PRIMARY KEY,
+            title TEXT PRIMARY KEY NOT NULL,
             posterPath TEXT,
             voteAverage REAL
             )""")

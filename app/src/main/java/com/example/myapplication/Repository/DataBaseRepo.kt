@@ -20,11 +20,28 @@ class DataBaseRepo(private val userDao: UserDao) {
         ).flow
     }
 
+//    fun readPagedDataNew(): Flow<PagingData<UserLikes>>
+//    {
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 20,
+//                enablePlaceholders = false
+//            ),
+//            pagingSourceFactory = { userDao.readAllDataNew() }
+//        ).flow
+//    }
+
     suspend fun addUserLike( userData: UserData) = userDao.addLikes(userData)
+
+//    suspend fun addUserLikeNew( userData: UserLikes) = userDao.addLikesNew(userData)
 
     suspend fun deleteUser(userData: UserData) = userDao.deleteUserLike(userData)
 
+//    suspend fun deleteUserNew(userData: UserLikes) = userDao.deleteUserLikeNew(userData)
+
     suspend fun deleteAllUsers() = userDao.deleteAllUserLikes()
+
+//    suspend fun deleteAllUsersNew() = userDao.deleteAllUserLikesNew()
 
     suspend fun checkIfTableisEmpty() = userDao.checkisEmpty()
 }

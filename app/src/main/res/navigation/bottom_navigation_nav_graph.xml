@@ -7,14 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.myapplication.HomeFragment"
+        android:name="com.example.myapplication.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/action_to_exploreScreen"
-            app:destination="@id/navigation_explore">
-        </action>
+            app:destination="@id/navigation_explore"/>
+        <action
+            android:id="@+id/action_to_myList"
+            app:destination="@id/navigation_myList" />
     </fragment>
 
     <fragment

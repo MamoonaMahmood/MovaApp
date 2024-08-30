@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.home
 
 
 import android.os.Bundle
@@ -6,30 +6,34 @@ import android.os.Handler
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
+import com.example.myapplication.NewReleasesSeeAll
+import com.example.myapplication.R
+import com.example.myapplication.TopMoviesSeeAll
 import com.example.myapplication.ViewModel.NewMovieViewModel
 import com.example.myapplication.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener {
+class HomeFragment : Fragment(R.layout.fragment_home){
 
-
+    private lateinit var movieLongClickListener: OnMovieLongClickListener
     private lateinit var topTenPagingAdapter: MoviePagingAdapter
     private lateinit var newReleasePagingAdapter: MoviePagingAdapter
-    private lateinit var dbViewModel: DataBaseViewModel
     private lateinit var topTenRecyclerView: RecyclerView
     private lateinit var newReleaseRecyclerView: RecyclerView
     private lateinit var seeAllTopMovies : TextView
@@ -37,6 +41,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
     private lateinit var mainImageView: ImageView
     private lateinit var bannerNameTextView: TextView
     private lateinit var newMovieViewModel: NewMovieViewModel
+    private lateinit var myListBtn: Button
+    private lateinit var navController: NavController
 
     private var currentBannerIndex = 0
     private val bannerChangeHandler = Handler(Looper.getMainLooper())
@@ -52,10 +58,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view)
         seeAllTopMovies = view.findViewById(R.id.seeAllTopMovie)
         seeAllTopRelease = view.findViewById(R.id.seeAllNewMovie)
         mainImageView = view.findViewById(R.id.mainImage)
         bannerNameTextView = view.findViewById(R.id.doctorText)
+        myListBtn = view.findViewById(R.id.myListButton)
+
+        myListBtn.setOnClickListener{
+            navController.navigate(R.id.action_to_myList)
+        }
 
         seeAllTopMovies.setOnClickListener{
 
@@ -74,11 +86,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
         }
 
 
-        //Initialize both recyclerViews
-        initializeRecyclerView(view)
 
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
         newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
+        movieLongClickListener = OnMovieLongClickListener(newMovieViewModel,requireContext())
+
+        initializeRecyclerView(view)
 
         newMovieViewModel.fetchBannerMovies()
 
@@ -120,45 +132,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnMovieLongClickListener 
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         topTenRecyclerView.hasFixedSize()
 
-        topTenPagingAdapter = MoviePagingAdapter(this)
-        newReleasePagingAdapter = MoviePagingAdapter(this)
+        topTenPagingAdapter = MoviePagingAdapter(movieLongClickListener)
+        newReleasePagingAdapter = MoviePagingAdapter(movieLongClickListener)
 
         topTenRecyclerView.adapter = topTenPagingAdapter
         newReleaseRecyclerView.adapter = newReleasePagingAdapter
 
         return view
-    }
-    override fun onMovieLongClicked(movieResult: MovieResult) {
-        showDialogueBox(
-            onPositiveClick = {
-                val userData = UserData(
-                    id = 0 ,
-                    posterPath = movieResult.posterPath,
-                    voteAverage = movieResult.voteAverage
-                )
-
-                dbViewModel.addUserLikes(userData)
-                Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
-            },
-            onNegativeClick = {
-                Toast.makeText(context, "Not Added to Favourites", Toast.LENGTH_SHORT).show()
-            })
-    }
-
-    private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
-    {
-        val builder =  AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmation")
-        builder.setMessage("Do you want to add this title to favorites?")
-
-        builder.setPositiveButton("Yes"){ _, _ ->
-            onPositiveClick()
-        }
-
-        builder.setNegativeButton("No"){ _,_ ->
-            onNegativeClick()
-        }
-        builder.show()
     }
 
     private fun updateBanner() {

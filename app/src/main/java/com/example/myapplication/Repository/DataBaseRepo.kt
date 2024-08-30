@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 class DataBaseRepo(private val userDao: UserDao) {
 
-    //val readAllData: Flow<List<UserData>> = userDao.readAllData()
-
     fun readPagedData(): Flow<PagingData<UserData>>
     {
         return Pager(

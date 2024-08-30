@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
+import com.example.myapplication.ViewModel.NewMovieViewModel
 import com.example.myapplication.adapter.DatabasePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,14 +23,13 @@ import kotlinx.coroutines.launch
 class MyListFragment : Fragment(R.layout.fragment_my_list), onMovieLongClick {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var dbViewModel: DataBaseViewModel
-    private lateinit var imageView: ImageView
+    private lateinit var dbViewModel: NewMovieViewModel
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recyclerViewMyList)
-        imageView = view.findViewById(R.id.imageView5)
 
         recyclerView.layoutManager = GridLayoutManager(context,2)
         recyclerView.hasFixedSize()
@@ -38,21 +37,7 @@ class MyListFragment : Fragment(R.layout.fragment_my_list), onMovieLongClick {
         val adapter = DatabasePagingAdapter(this)
         recyclerView.adapter = adapter
 
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
-        //recyclerView.visibility = VISIBLE
-
-        lifecycleScope.launch {
-            dbViewModel.isTableEmpty.collect { isEmpty ->
-                if(isEmpty){
-                    imageView.visibility = VISIBLE
-                    recyclerView.visibility = INVISIBLE
-                }
-                else {
-                    imageView.visibility = INVISIBLE
-                    recyclerView.visibility = VISIBLE
-                }
-            }
-        }
+        dbViewModel = ViewModelProvider(this)[NewMovieViewModel::class.java]
 
         lifecycleScope.launch {
             dbViewModel.readAllDataFlow.collectLatest {  pagingData ->
@@ -77,7 +62,7 @@ class MyListFragment : Fragment(R.layout.fragment_my_list), onMovieLongClick {
 
     private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
     {
-        val builder =  AlertDialog.Builder(requireContext())
+        val builder =  AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
         builder.setTitle("Confirmation")
         builder.setMessage("Do you want to delete this title?")
 

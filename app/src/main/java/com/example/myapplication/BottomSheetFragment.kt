@@ -14,8 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.example.myapplication.ViewModel.NewMovieViewModel
-
-
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
@@ -26,7 +25,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var chipGroupTime: ChipGroup
     private lateinit var chipGroupSort: ChipGroup
     private lateinit var chipGroupCategory: ChipGroup
-    private lateinit var movieViewModel: NewMovieViewModel
     private lateinit var resetBtn: Button
     private lateinit var applyBtn: Button
 
@@ -64,6 +62,10 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         resetBtn = view.findViewById(R.id.buttonReset)
         applyBtn = view.findViewById(R.id.buttonApply)
 
+        val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
+
+        bottomSheetBehavior.peekHeight = 600
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         chipGroupRegions.setOnCheckedChangeListener{ chipGroupRegions, checkedId ->
             handleChipSelection(chipGroupRegions, checkedId, "Region")
@@ -83,7 +85,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
         chipGroupTime.setOnCheckedChangeListener{ chipGroupTime, checkedId ->
             handleChipSelection(chipGroupTime, checkedId, "Time")
-
         }
 
 
@@ -114,9 +115,9 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         if (checkedId != View.NO_ID) {
             val selectedChip = chipGroup.findViewById<Chip>(checkedId)
             val chipText = selectedChip.tag.toString()
-            Toast.makeText(context, "$chipType: $chipText", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "$chipType: $chipText", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "No $chipType selected", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "No $chipType selected", Toast.LENGTH_SHORT).show()
         }
     }
 

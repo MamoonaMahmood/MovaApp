@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
@@ -17,10 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
+import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
-import com.example.myapplication.ViewModel.DataBaseViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myapplication.ViewModel.NewMovieViewModel
@@ -31,13 +32,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 
-class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener, BottomSheetFragment.FilterCallback{
+class ExploreFragment : Fragment(R.layout.fragment_explore), BottomSheetFragment.FilterCallback{
 
-
+    private lateinit var movieLongClickListener: OnMovieLongClickListener
     private lateinit var popRecyclerView: RecyclerView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
-    private lateinit var dbViewModel: DataBaseViewModel
     private lateinit var newMovieViewModel: NewMovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,9 +45,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
 
         filterBtn = view.findViewById(R.id.imageFilterButton)
         searchView = view.findViewById(R.id.searchView)
+        showSoftKeyboard(searchView)
 
         newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
-        dbViewModel = ViewModelProvider(this)[DataBaseViewModel::class.java]
 
 
         searchView.setOnClickListener(object : View.OnClickListener
@@ -63,9 +63,10 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         popRecyclerView.layoutManager = GridLayoutManager(context, 2)
         popRecyclerView.hasFixedSize()
 
-        val popMoviePagingAdapter = MoviePagingAdapter(this)
-        popRecyclerView.adapter = popMoviePagingAdapter
+        movieLongClickListener = OnMovieLongClickListener(newMovieViewModel, requireContext())
 
+        val popMoviePagingAdapter = MoviePagingAdapter(movieLongClickListener)
+        popRecyclerView.adapter = popMoviePagingAdapter
 
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -89,49 +90,24 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
             }
         })
 
+        val bottomSheet = BottomSheetFragment()
         filterBtn.setOnClickListener{
-            val bottomSheet = BottomSheetFragment()
             bottomSheet.setFilterCallback(this)
-            bottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
-
+            bottomSheet.show(childFragmentManager,BottomSheetFragment.TAG)
         }
-    }
-
-    override fun onMovieLongClicked(movieResult: MovieResult) {
-        showDialogueBox(
-            onPositiveClick = {
-                val userData = UserData(
-                    id = 0 ,
-                    posterPath = movieResult.posterPath,
-                    voteAverage = movieResult.voteAverage
-                )
-
-                dbViewModel.addUserLikes(userData)
-                Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
-            },
-            onNegativeClick = {
-                Toast.makeText(context, "Not Added to Favourites", Toast.LENGTH_SHORT).show()
-            })
-    }
-
-    private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
-    {
-        val builder =  AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmation")
-        builder.setMessage("Do you want to add this title to favorites?")
-
-        builder.setPositiveButton("Yes"){ _, _ ->
-            onPositiveClick()
-        }
-
-        builder.setNegativeButton("No"){ _,_ ->
-            onNegativeClick()
-        }
-        builder.show()
     }
 
     override fun onFilterApplied(filterObj: FilterObj) {
         newMovieViewModel.setFilterData(filterObj)
+    }
+
+    private fun showSoftKeyboard(searchView: SearchView)
+    {
+        if(searchView.requestFocus()){
+            val imm = requireContext().getSystemService(InputMethodManager::class.java)
+            imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+
+        }
     }
 
 }

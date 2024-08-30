@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.CallbackInterfaces.OnMovieLongClickListener
+import com.example.myapplication.CallbackInterfaces.onMovieLongClick
 import com.example.myapplication.Data.FilterObj
 import com.example.myapplication.Data.MovieResult
 import com.example.myapplication.Data.UserData
@@ -31,9 +32,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 
-class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickListener, BottomSheetFragment.FilterCallback{
+class ExploreFragment : Fragment(R.layout.fragment_explore), BottomSheetFragment.FilterCallback{
 
-
+    private lateinit var movieLongClickListener: OnMovieLongClickListener
     private lateinit var popRecyclerView: RecyclerView
     private lateinit var filterBtn: ImageButton
     private lateinit var searchView: SearchView
@@ -62,7 +63,9 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
         popRecyclerView.layoutManager = GridLayoutManager(context, 2)
         popRecyclerView.hasFixedSize()
 
-        val popMoviePagingAdapter = MoviePagingAdapter(this)
+        movieLongClickListener = OnMovieLongClickListener(newMovieViewModel, requireContext())
+
+        val popMoviePagingAdapter = MoviePagingAdapter(movieLongClickListener)
         popRecyclerView.adapter = popMoviePagingAdapter
 
 
@@ -92,39 +95,6 @@ class ExploreFragment : Fragment(R.layout.fragment_explore), OnMovieLongClickLis
             bottomSheet.setFilterCallback(this)
             bottomSheet.show(childFragmentManager,BottomSheetFragment.TAG)
         }
-    }
-
-    override fun onMovieLongClicked(movieResult: MovieResult) {
-        showDialogueBox(
-            onPositiveClick = {
-                val userData = UserData(
-                    id = 0 ,
-                    posterPath = movieResult.posterPath,
-                    voteAverage = movieResult.voteAverage
-                )
-
-                newMovieViewModel.addUserLikes(userData)
-                Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
-            },
-            onNegativeClick = {
-                Toast.makeText(context, "Not Added to Favourites", Toast.LENGTH_SHORT).show()
-            })
-    }
-
-    private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
-    {
-        val builder =  AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmation")
-        builder.setMessage("Do you want to add this title to favorites?")
-
-        builder.setPositiveButton("Yes"){ _, _ ->
-            onPositiveClick()
-        }
-
-        builder.setNegativeButton("No"){ _,_ ->
-            onNegativeClick()
-        }
-        builder.show()
     }
 
     override fun onFilterApplied(filterObj: FilterObj) {

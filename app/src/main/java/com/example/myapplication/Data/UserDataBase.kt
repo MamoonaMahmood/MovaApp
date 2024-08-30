@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
-@Database(entities = [UserData::class], version = 1)
+@Database(entities = [UserData::class], version = 1, exportSchema = false)
 abstract class UserDataBase :RoomDatabase()
 {
     abstract fun userDao():UserDao
@@ -45,7 +45,8 @@ val MIGRATION_1_2 = object : Migration(1,2) {
 
         db.execSQL("""
             INSERT INTO user_likes_new(title, posterPath, voteAverage)
-            SELECT title, posterPath, voteAverage FROM user_likes
+            SELECT CAST (id AS TEXT) AS title, posterPath, voteAverage 
+            FROM user_likes
         """)
 
         db.execSQL("DROP TABLE user_likes")

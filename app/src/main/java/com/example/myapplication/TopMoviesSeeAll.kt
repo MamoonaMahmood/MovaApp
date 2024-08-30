@@ -24,8 +24,9 @@ import com.example.myapplication.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieLongClickListener {
+class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all) {
 
+    private lateinit var movieLongClickListener: OnMovieLongClickListener
     private lateinit var backBtn: ImageButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var topMoviePagingAdapter: MoviePagingAdapter
@@ -38,14 +39,14 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.hasFixedSize()
 
-        topMoviePagingAdapter = MoviePagingAdapter(this)
+        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
+        movieLongClickListener = OnMovieLongClickListener(newMovieViewModel, requireContext())
+        topMoviePagingAdapter = MoviePagingAdapter(movieLongClickListener)
         recyclerView.adapter = topMoviePagingAdapter
 
         backBtn.setOnClickListener{
             parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
-
-        newMovieViewModel = ViewModelProvider(requireActivity())[NewMovieViewModel::class.java]
 
         viewLifecycleOwner.lifecycleScope.launch {
             newMovieViewModel.topRatedMoviesFlow.collectLatest { pagingData ->
@@ -53,36 +54,5 @@ class TopMoviesSeeAll : Fragment(R.layout.fragment_top_movies_see_all), OnMovieL
             }
         }
     }
-    override fun onMovieLongClicked(movieResult: MovieResult) {
-        showDialogueBox(
-            onPositiveClick = {
-                val userData = UserData(
-                    id = 0 ,
-                    posterPath = movieResult.posterPath,
-                    voteAverage = movieResult.voteAverage
-                )
 
-                newMovieViewModel.addUserLikes(userData)
-                Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
-            },
-            onNegativeClick = {
-                Toast.makeText(context, "Not Added to Favourites", Toast.LENGTH_SHORT).show()
-            })
-    }
-
-    private fun showDialogueBox(onPositiveClick: () -> Unit, onNegativeClick: () -> Unit)
-    {
-        val builder =  AlertDialog.Builder(requireContext(),R.style.AlertDialogTheme)
-        builder.setTitle("Confirmation")
-        builder.setMessage("Do you want to add this title to favorites?")
-
-        builder.setPositiveButton("Yes"){ _, _ ->
-            onPositiveClick()
-        }
-
-        builder.setNegativeButton("No"){ _,_ ->
-            onNegativeClick()
-        }
-        builder.show()
-    }
 }
